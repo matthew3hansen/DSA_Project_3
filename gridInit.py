@@ -1,0 +1,1 @@
+from Mapinit import mapFileName, streetNamesFileName, useNumbersInsteadOfStreetNames
