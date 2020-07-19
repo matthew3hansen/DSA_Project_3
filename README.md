@@ -8,7 +8,7 @@ In the wake of Covid-19 and social unrest, crime rates are steadily increasing, 
 
 ### Features
 
-The safest path finder maps out the safest and shortest path using Dijstra's Shortest Path algorithm. We have implemented a crime rate generator that assigns specific points with the current crime rate on a scale of 1-10. We also have implemented a simulator that maps out the route to the destination.
+The safest path finder maps out the safest and shortest path using Dijstra's Shortest Path algorithm. We have implemented a crime rate generator that assigns specific areas with the current crime rate on a scale of 1-10. We also have implemented a simulator that maps out the route to the destination.
 
 ### Challenges we had to face
 
