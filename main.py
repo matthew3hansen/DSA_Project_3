@@ -1,28 +1,22 @@
-import Mapinit
 import safestPathAlg
 
-
-
+# MAIN FUNCTION
 if __name__ == '__main__':
-    #first find the dimensions of the map
+    # first find the dimensions of the map
     rows, columns = safestPathAlg.findDimensionsOfMap()
+    # create 2-D list adjacency list of the map
+    adjacencyList, intersectionNameDictionary = safestPathAlg.createAdjacencyList(rows, columns)
 
-    ##call function to create map and store the single returned node from which the rest of the graph can be accessed
-    #createdGraph = createMapAsNodes(rows, columns)
-    ##debugging explore graph function to see if graph was linked correctly between its nodes
-    #exploreGraphAsNodes(createdGraph)
+    # for i in range(len(adjacencyList)):
+    #    print("Row", i,":", end="")
+    #    for j in range(len(adjacencyList[i].adjacentNodes)):
+    #        print(adjacencyList[i].adjacentNodes[j].intersectionName, " --- ", end="")
+    #    print()
+    # for i in intersectionNameDictionary:
+    #   print(i, "--->", intersectionNameDictionary[i])
 
-    #create 2-D list adjacency list of the map
-    adjacencyList = safestPathAlg.createMapAsAdjacencyList(rows, columns)
-
-
-
-    #1st row ("1st as in not the programming type of 1"), 1st column to 9th row, 8th column
-    #findShortestPathAdjacencyList(adjacencyList, "Chevrolet", "Oldsmobile", "Porsche","Eustace")
-    safestPathAlg.findShortestPathAdjacencyList(adjacencyList, 0, 0, 8, 7)
-
-    #reload the map
-    adjacencyList = safestPathAlg.createMapAsAdjacencyList(rows, columns)
-    #2nd row, 2nd column
-    #findShortestPathAdjacencyList(adjacencyList, "Chevrolet", "Oldsmobile", "Studebaker","Fiat")
-    safestPathAlg.findShortestPathAdjacencyList(adjacencyList, 0, 0, 1, 1)
+    # test
+    safestPathAlg.findShortestPathAdjacencyList(adjacencyList, intersectionNameDictionary, "0 / 0", "4 / 3", True)
+    # reload the map
+    adjacencyList, intersectionNameDictionary = safestPathAlg.createAdjacencyList(rows, columns)
+    safestPathAlg.findShortestPathAdjacencyList(adjacencyList, intersectionNameDictionary, "0 / 0", "4 / 3", False)

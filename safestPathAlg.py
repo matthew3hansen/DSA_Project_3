@@ -1,32 +1,5 @@
-""" We should work on these """
-
-
-# Node class that will represent a street intersection
-from Mapinit import mapFileName, streetNamesFileName, useNumbersInsteadOfStreetNames
-
-
-class Node:
-    # constructor with its instance variables
-    def __init__(self, hasLighting):
-        # strings to store the two street names of the intersection
-        self.firstStreetName = ""
-        self.secondStreetName = ""
-        # bool variable that indicates if the street has lighting or not
-        self.hasLighting = hasLighting
-        # pointers to the four adjacent intersections, set to null by default
-        self.west = None
-        self.north = None
-        self.east = None
-        self.south = None
-        # helper variables for later stuff like Dijkstra's shortest path algorithm
-        # stores initial "infinite" value for Dijikstra calculations
-        self.dist = float("inf")
-        # weight variable for Dijikstra, in case we decide to add weights to street intersections later on or not
-        self.weight = 1
-        # visited boolean for Dijikstra
-        self.visited = False
-        # storing the path used for Dijikstra
-        self.previousPath = None
+from Mapinit import mapFileName, streetNamesFileName, useNumbersInsteadOfStreetNames, Node, safeIntersectionWeight, \
+    unsafeIntersectionWeight
 
 
 # function that finds the number of rows and columns from the file
@@ -61,10 +34,14 @@ def findDimensionsOfMap():
 
 
 # read in from the file and create the map
-# first this function creates a 2D array and populates it with create Node's, if the associated map position isn't blocked
-# then the nodes in the 2D array are linked to each other
-def createMapAsNodes(rows, columns):
-    # open and read in street names
+# first, this function reads in street names for each latitude row and longitude column of the map,
+# storing them in a "horizontalStreetNames" array as well as a "verticalStreetNames" array
+# then this function creates a 2D array and populates it with created Nodes, if the associated map position isn't blocked
+# then this 2-D map is scanned from left-to-right, up-to-down, tile by tile,
+# during this scan, the Nodes are added to the newly created adjacency list, and the inner array for each added Node
+# is populated with the unblocked nodes to the north, south, east, and west of that Node
+
+def readFile(rows, columns):
     streetNamesFileObject = open(streetNamesFileName, "r")
     # arrays to store in the horizontal and vertical street names
     horizontalStreetNames = ["" for i in range(rows)]
@@ -85,22 +62,18 @@ def createMapAsNodes(rows, columns):
         verticalStreetNames[j] = readInLine
     # close the previously opened street names file
     streetNamesFileObject.close()
+    return verticalStreetNames, horizontalStreetNames
 
+
+def insertNodes(rows, columns, verticalStreetNames, horizontalStreetNames):
     # open the csv file that contains the city map, in order to read in the data to create the map's nodes
     # second argument "r" is read-mode
     readFileObject = open(mapFileName, "r")
-
-    # create array that will store the newly created Node's
+    # create array that will store the newly created Nodes
     # this array will be populated in a first 2-D for-loop
     # then the Nodes will be linked together in a second 2-D for-loop
     array = [[None for y in range(columns)] for x in range(rows)]
-
-    # first 2-D for-loop that populates the array of Nodes
-    # store the index values of the first Node created, so that this initial Node can be returned to represent the graph
-    # this will probably be, [0,0]
-    initialNodeI = -1
-    initialNodeJ = -1
-    firstNodeFound = False
+    # nested for-loop that reads in the map CSV file and populates the 2-D array of Nodes
     for i in range(0, rows):
         # read in single line
         readInLine = readFileObject.readline()
@@ -108,340 +81,149 @@ def createMapAsNodes(rows, columns):
         readInLine = readInLine.strip('\n')
         # make the string into a list, deliminated by commas
         readInLine = readInLine.split(',')
-
-        # create j index for inner loop
+        # nested inner for-loop
         j = 0
         for singleChar in readInLine:
             # if intersection is open
             if singleChar == 'O' or singleChar == 'L':
-                # store index values of first created node (which will probably be [0, 0] but could vary depending on the city map input)
-                if (firstNodeFound == False):
-                    initialNodeI = i
-                    initialNodeJ = j
-                    firstNodeFound = True
-
-                # if intersection is not lit ('O')
-                if singleChar == 'O':
-                    array[i][j] = Node(False)
-                # if intersection is lit ('L')
-                else:
-                    array[i][j] = Node(True)
-
+                array[i][j] = Node()
                 # assign street name to intersection
-                array[i][j].firstStreetName = horizontalStreetNames[i]
-                array[i][j].secondStreetName = verticalStreetNames[j]
+                if useNumbersInsteadOfStreetNames == True:
+                    array[i][j].intersectionName = str(i) + " / " + str(j)
+                else:
+                    array[i][j].intersectionName = horizontalStreetNames[i] + " / " + verticalStreetNames[j]
+                # assign weight to intersection
+                if singleChar == 'L':
+                    array[i][j].weight = safeIntersectionWeight
+                else:
+                    array[i][j].weight = unsafeIntersectionWeight
             else:
                 array[i][j] = None
             # iterate to next j index
             j += 1
     # close the previously opened .csv file that contains the city map
     readFileObject.close()
-
-    # second 2-D for-loop that links the nodes together
-    # the for-loop will, on each element it visits, create outgoing links to the adjacent nodes if they are
-    # not out of bounds and if they are not a blocked intersection (which in the created 2D array is a "None" value)
-    # i outer-loop
-    for i in range(0, rows):
-        # j inner-loop
-        for j in range(0, columns):
-            # if the matrix element being iterated on is None (blocked intersection), then there
-            # is no node, and no outgoing connections can be made, so just continueto the next element
-            if array[i][j] == None:
-                continue
-
-            # Otherwise, if the Node exists, make the cardinal outgoing connections
-            # link north
-            if i - 1 >= 0 and array[i - 1][j] != None:
-                array[i][j].north = array[i - 1][j]
-            # link south
-            if i + 1 < rows and array[i + 1][j] != None:
-                array[i][j].south = array[i + 1][j]
-            # link east
-            if j + 1 < columns and array[i][j + 1] != None:
-                array[i][j].east = array[i][j + 1]
-            # link west
-            if j - 1 >= 0 and array[i][j - 1] != None:
-                array[i][j].west = array[i][j - 1]
-
-    print("Loaded map from \"", mapFileName, "\" and street names from \"", streetNamesFileName, "\" successfully!",
-          sep='')
-    # return the first node (top-most and left-mode node which is probably [0, 0]
-    # this first node has connections to all the other created nodes, so it's the graph
-    return array[initialNodeI][initialNodeJ]
+    return array
 
 
-# traverse the map for debugging purposes
-def exploreGraphAsNodes(createdGraph):
-    currentNode = createdGraph
-    print()
-    print("You started on road intersection:", currentNode.firstStreetName, " / ", currentNode.secondStreetName)
-    userInput = input("Enter in direction to move (\"n\", \"s\", \"e\", \"w\") or \"exit\" to exit: ")
-
-    while (userInput != "exit"):
-        # if the command was one of the cardinal directions, see if you can move there
-        # and if you can, then move there
-        # if you can't then stay where you were
-        if (userInput == "n"):
-            if (currentNode.north == None):
-                print("Can not move North, either it is blocked or off the map.")
-                print("You remain on road intersection:", currentNode.firstStreetName, " / ",
-                      currentNode.secondStreetName)
-            else:
-                currentNode = currentNode.north
-                print("You moved North to road intersection:", currentNode.firstStreetName, " / ",
-                      currentNode.secondStreetName)
-        elif (userInput == "s"):
-            if (currentNode.south == None):
-                print("Can not move South, either it is blocked or off the map.")
-                print("You remain on road intersection:", currentNode.firstStreetName, " / ",
-                      currentNode.secondStreetName)
-            else:
-                currentNode = currentNode.south
-                print("You moved South to road intersection:", currentNode.firstStreetName, " / ",
-                      currentNode.secondStreetName)
-        elif (userInput == "e"):
-            if (currentNode.east == None):
-                print("Can not move East, either it is blocked or off the map.")
-                print("You remain on road intersection:", currentNode.firstStreetName, " / ",
-                      currentNode.secondStreetName)
-            else:
-                currentNode = currentNode.east
-                print("You moved East to road intersection:", currentNode.firstStreetName, " / ",
-                      currentNode.secondStreetName)
-        elif (userInput == "w"):
-            if (currentNode.west == None):
-                print("Can not move West, either it is blocked or off the map.")
-                print("You remain on road intersection:", currentNode.firstStreetName, " / ",
-                      currentNode.secondStreetName)
-            else:
-                currentNode = currentNode.west
-                print("You moved West to road intersection:", currentNode.firstStreetName, " / ",
-                      currentNode.secondStreetName)
-
-        # prompt for more commands
-        print()
-        userInput = input("Enter in direction to move (\"n\", \"s\", \"e\", \"w\") or \"exit\" to exit: ")
-
-    print("Graph Exploration done ----- exiting!")
-
-
-# read in from the file and create the map
-# first this function creates a 2D array and populates it with created Nodes, if the associated map position isn't blocked
-# then the nodes are added to an 3-D list that is the adjacency list, where:
-# adjacencyList[0][0] is the "label" of the unique node, adjacencyList[0][1][0] is the "first adjacent node to that unique node"
-def createMapAsAdjacencyList(rows, columns):
+def createAdjacencyList(rows, columns):
     # open and read in street names
-    streetNamesFileObject = open(streetNamesFileName, "r")
-    # arrays to store in the horizontal and vertical street names
-    horizontalStreetNames = ["" for i in range(rows)]
-    for i in range(0, rows):
-        # read in single line
-        readInLine = streetNamesFileObject.readline()
-        # remove the new line character at the end
-        readInLine = readInLine.strip('\n')
-        # store into array
-        horizontalStreetNames[i] = readInLine
-    verticalStreetNames = ["" for j in range(columns)]
-    for j in range(0, columns):
-        # read in single line
-        readInLine = streetNamesFileObject.readline()
-        # remove the new line character at the end
-        readInLine = readInLine.strip('\n')
-        # store into array
-        verticalStreetNames[j] = readInLine
-    # close the previously opened street names file
-    streetNamesFileObject.close()
+    verticalStreetNames, horizontalStreetNames = readFile(rows, columns)
+    array = insertNodes(rows, columns, verticalStreetNames, horizontalStreetNames)
 
-    # open the csv file that contains the city map, in order to read in the data to create the map's nodes
-    # second argument "r" is read-mode
-    readFileObject = open(mapFileName, "r")
-
-    # create array that will store the newly created Node's
-    # this array will be populated in a first 2-D for-loop
-    # then the Nodes will be linked together in a second 2-D for-loop
-    array = [[None for y in range(columns)] for x in range(rows)]
-
-    # first 2-D for-loop that populates the array of Nodes
-    # store the index values of the first Node created, so that this initial Node can be returned to represent the graph
-    # this will probably be, [0,0]
-    initialNodeI = -1
-    initialNodeJ = -1
-    firstNodeFound = False
-    for i in range(0, rows):
-        # read in single line
-        readInLine = readFileObject.readline()
-        # remove the new line character at the end
-        readInLine = readInLine.strip('\n')
-        # make the string into a list, deliminated by commas
-        readInLine = readInLine.split(',')
-
-        # create j index for inner loop
-        j = 0
-        for singleChar in readInLine:
-            # if intersection is open
-            if singleChar == 'O' or singleChar == 'L':
-                # store index values of first created node (which will probably be [0, 0] but could vary depending on the city map input)
-                if (firstNodeFound == False):
-                    initialNodeI = i
-                    initialNodeJ = j
-                    firstNodeFound = True
-
-                # if intersection is not lit ('O')
-                if singleChar == 'O':
-                    array[i][j] = Node(False)
-                # if intersection is lit ('L')
-                else:
-                    array[i][j] = Node(True)
-
-                # assign street name to intersection
-                if (useNumbersInsteadOfStreetNames == True):
-                    array[i][j].firstStreetName = i
-                    array[i][j].secondStreetName = j
-                else:
-                    array[i][j].firstStreetName = horizontalStreetNames[i]
-                    array[i][j].secondStreetName = verticalStreetNames[j]
-            else:
-                array[i][j] = None
-            # iterate to next j index
-            j += 1
-    # close the previously opened .csv file that contains the city map
-    readFileObject.close()
-
-    # second 2-D for-loop that populates a 3-D list that is the adjacency list, where:
-    # adjacencyList[0][0] is the "label" of the unique node, adjacencyList[0][1][0] is the "first adjacent node to that unique node"
-    # outer array storing the unique Nodes
+    """nested for-loop that populates an adjaency list
+    this for-loop scans over the previously made 2-D map from left-to-right, up-to-down
+    and adds not-blocked Nodes to the outer array, then an inner array data member of that Node is populated
+    with the Nodes that are adjacent and not-blocked
+    outer array storing the unique Nodes"""
     adjacencyList = []
-    # index value to access the above create outer array
-    uniqueVertixCount = 0
-    # i outer-loop
+    # dictionary that will map between a string intersection name with the relevant Node object
+    intersectionNameDictionary = {}
+    # counter variable to keep track of how many non-blocked Nodes are added to the adjacency list, for the above dictionary
+    runningIndexOfList = -1
     for i in range(0, rows):
-        # j inner-loop
         for j in range(0, columns):
             # if the matrix element being iterated on is None (blocked intersection), then there
             # is no node, and no outgoing connections can be made, so just continueto the next element
             if array[i][j] == None:
                 continue
-
-            # Otherwise, if the Node exists, create an inner array fpr that Node
-            adjacencyList.append([])
-            # add the Node as the "label" to the entry
-            adjacencyList[uniqueVertixCount].append(array[i][j])
-            # add another inner array that will store the nodes adjacent to that unique Node
-            adjacencyList[uniqueVertixCount].append([])
+            # otherwise, if the Node exists, create an entry to the dictionary that correlates the name
+            # of the intersection with its index position in the adjacency array
+            runningIndexOfList += 1
+            intersectionNameDictionary[array[i][j].intersectionName] = runningIndexOfList
+            adjacencyList.append(array[i][j])
+            # check the four neighbors of the nodes, and add them to the inner array data member of the Node
             # add north if it exists
             if i - 1 >= 0 and array[i - 1][j] != None:
-                adjacencyList[uniqueVertixCount][1].append(array[i - 1][j])
-                array[i][j].north = array[i - 1][j]
+                adjacencyList[runningIndexOfList].adjacentNodes.append(array[i - 1][j])
             # add south if it exists
             if i + 1 < rows and array[i + 1][j] != None:
-                adjacencyList[uniqueVertixCount][1].append(array[i + 1][j])
-                array[i][j].south = array[i + 1][j]
+                adjacencyList[runningIndexOfList].adjacentNodes.append(array[i + 1][j])
             # add east if it exists
             if j + 1 < columns and array[i][j + 1] != None:
-                adjacencyList[uniqueVertixCount][1].append(array[i][j + 1])
-                array[i][j].east = array[i][j + 1]
+                adjacencyList[runningIndexOfList].adjacentNodes.append(array[i][j + 1])
             # add west if it exists
             if j - 1 >= 0 and array[i][j - 1] != None:
-                adjacencyList[uniqueVertixCount][1].append(array[i][j - 1])
-                array[i][j].west = array[i][j - 1]
-
-            # iterate the outer array index and continue the loop
-            uniqueVertixCount += 1
+                adjacencyList[runningIndexOfList].adjacentNodes.append(array[i][j - 1])
 
     print("Loaded map from \"", mapFileName, "\" and street names from \"", streetNamesFileName, "\" successfully!",
           sep='')
     # return the created 2-D adjacency list
-    return adjacencyList
+    return adjacencyList, intersectionNameDictionary
 
 
-# take in a 2-D array adjacency list and use Dijikstra's shortest path algorithm to populate the map
-def findShortestPathAdjacencyList(adjacencyList, sourceFirstStreetName, sourceSecondStreetName, destFirstStreetName,
-                                  destSecondStreetName):
-    # first check if the input street names exist at all
-    foundSource = False
-    foundDest = False
-    # this for loop both checks if the entered street name exists
-    # if the source node is found, it also sets its distance value to 0 for Dijikta's algorithm
-    for i in range(len(adjacencyList)):
-        if (adjacencyList[i][0].firstStreetName == sourceFirstStreetName and adjacencyList[i][
-            0].secondStreetName == sourceSecondStreetName):
-            foundSource = True
-            # set the source node distance to 0 for Dijikstra's algorithm
-            adjacencyList[i][0].dist = 0
-        if (adjacencyList[i][0].firstStreetName == destFirstStreetName and adjacencyList[i][
-            0].secondStreetName == destSecondStreetName):
-            foundDest = True
-        # if both street intersections were found, then exit the for loop
-        if (foundSource == True and foundDest == True):
-            break
-
-    # if either the source or destionation were NOT found, then exit the function
-    if (foundSource == False):
-        print("Specified source street intersection: ", sourceFirstStreetName, " / ", sourceSecondStreetName,
-              " was not found.")
+# take in a 2-D array adjacency list and its accompany dictionary
+# and use Dijikstra's shortest path algorithm to find the shortest path to the destination
+# only one path is found if there are multiple identical length paths
+# finally, print out this path to the terminal
+def findShortestPathAdjacencyList(adjacencyList, intersectionNameDictionary, sourceIntersectionName,
+                                  destinationIntersectionName, usingNodesWeights):
+    # first check if the input intersections exist at all in the adjacency list
+    if (sourceIntersectionName not in intersectionNameDictionary.keys()):
+        print("Specified source street intersection: \"", sourceIntersectionName,
+              "\" was not recognized as a valid starting point.", sep='')
         return
-    if (foundDest == False):
-        print("Specified destination street intersection: ", destFirstStreetName, " / ", destSecondStreetName,
-              " was not found.")
+    if (destinationIntersectionName not in intersectionNameDictionary.keys()):
+        print("Specified destination street intersection: \"", destinationIntersectionName,
+              "\" was not recognized as a valid starting point.", sep='')
         return
 
+    # set the source intersection's "dist" value to 0
+    adjacencyList[intersectionNameDictionary[sourceIntersectionName]].dist = 0
     # for-loop over all the unique nodes, performing Dijikstra's algorithm
     visitedCount = 0
     while (visitedCount != len(adjacencyList)):
         # first find the node with the lowest distance
         minDistance = float("inf")
         minIndex = 0
-        # set the initial index value to be whatever node is not-visited first, in case for some reason there is no minimum distance
-        # lower than infinite (actually, theoretically this should never happen)
-        firstFound = False
         for i in range(len(adjacencyList)):
-            # set initial index to whatever not-visited node comes first
-            if (adjacencyList[i][0].visited == False and firstFound == False):
-                minIndex = 1
-                firstFound = True
-            # find the minimum distance node to be acted upon
-            if (adjacencyList[i][0].visited == False and adjacencyList[i][0].dist < minDistance):
+            if (adjacencyList[i].visited == False and adjacencyList[i].dist < minDistance):
+                minDistance = adjacencyList[i].dist
                 minIndex = i
-                break
-
         # act upon the chosen minimum distance node
         # mark the chosen node as visited
-        adjacencyList[i][0].visited = True
+        adjacencyList[minIndex].visited = True
         # set the distance of the chosen minimum distance node's neighbors
-        for i in range(len(adjacencyList[minIndex][1])):
-            if (adjacencyList[minIndex][0].dist + adjacencyList[minIndex][1][i].weight < adjacencyList[minIndex][1][
-                i].dist):
-                adjacencyList[minIndex][1][i].dist = adjacencyList[minIndex][0].dist + adjacencyList[minIndex][1][
-                    i].weight
+        for j in range(len(adjacencyList[minIndex].adjacentNodes)):
+            if (usingNodesWeights == False):
+                weight = 1
+            else:
+                weight = adjacencyList[minIndex].adjacentNodes[j].weight
+            if (adjacencyList[minIndex].dist + weight < adjacencyList[minIndex].adjacentNodes[j].dist):
+                adjacencyList[minIndex].adjacentNodes[j].dist = adjacencyList[minIndex].dist + weight
                 # set this neighbor node's "previousPath" variable to record how it got to there
-                adjacencyList[minIndex][1][i].previousPath = adjacencyList[minIndex][0]
-
+                if len(adjacencyList[minIndex].adjacentNodes[j].previousPath) == 0:
+                    adjacencyList[minIndex].adjacentNodes[j].previousPath.append(adjacencyList[minIndex])
+                else:
+                    adjacencyList[minIndex].adjacentNodes[j].previousPath[0] = adjacencyList[minIndex]
         # iterate the counter and continue on the while loop
         visitedCount += 1
-        # however, if the just-visited node was the destination node, then stop the algorithm
-        if (adjacencyList[minIndex][0].firstStreetName == destFirstStreetName and adjacencyList[minIndex][
-            0].secondStreetName == destSecondStreetName):
-            print("Path from: \"", sourceFirstStreetName, "\" / \"", sourceSecondStreetName, "\" to \"",
-                  destFirstStreetName, "\" / \"", destSecondStreetName, "\":", sep='')
-            print("Total number of steps to take: ", adjacencyList[minIndex][0].dist)
-            # print out the path taken
-            pointerToPreviousNode = adjacencyList[minIndex][0].previousPath
+        # however, before continuing the loop, check if the just-visited node was the destination node,
+        # and stop the while loop if it was
+        if adjacencyList[minIndex].intersectionName == destinationIntersectionName:
+            print("A single shortest path from: \"", sourceIntersectionName, "\" to \"", destinationIntersectionName,
+                  "\" is:", sep='')
+            if usingNodesWeights == True:
+                print("(with taking account of crime map weights)")
+            else:
+                print("(with strictly by distance, ignoring crime map weights)")
+            # create a stack and backtrack from the destination node, following each Node's "previousPath" variable
+            pointerToPreviousNode = adjacencyList[minIndex]
             pathStack = []
-            pathStack.append(adjacencyList[minIndex][0])
             while (pointerToPreviousNode != None):
                 pathStack.append(pointerToPreviousNode)
-                pointerToPreviousNode = pointerToPreviousNode.previousPath
+                if len(pointerToPreviousNode.previousPath) == 0:
+                    break
+                pointerToPreviousNode = pointerToPreviousNode.previousPath[0]
+            print("Total number of steps to take: ", len(pathStack))
             # print out the route
-            print("Start on: \"", pathStack[len(pathStack) - 1].firstStreetName, "\" / \"",
-                  pathStack[len(pathStack) - 1].secondStreetName, "\"", sep='')
+            print("Start on: \"", pathStack[len(pathStack) - 1].intersectionName, "\"", sep='')
             pathStack.pop()
             stepCounter = 1
             while (len(pathStack) != 0):
                 print("Step #", stepCounter, ": Go to street intersection \"",
-                      pathStack[len(pathStack) - 1].firstStreetName, "\" / \"",
-                      pathStack[len(pathStack) - 1].secondStreetName, "\"", sep='')
+                      pathStack[len(pathStack) - 1].intersectionName, "\"", sep='')
                 pathStack.pop()
                 stepCounter += 1
-
-            print()
+            print("\n\n")
             return
