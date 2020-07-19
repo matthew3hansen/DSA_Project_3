@@ -14,7 +14,7 @@ The safest path finder maps out the safest and shortest path using Dijstra's Sho
 
 Since we are currently taking an intro Data structures and Algorithms course, our knowlege of pathfinding algorithms is limited. It was very challenging working virutually with the team since Covid-19 has closed down our college campus for the summer and not all of us has the same experience with pygame/python.
 
-### Prerequisites
+## Prerequisites
 ### Software
 
 - [Pygame](https://www.pygame.org/) (not required to run main.py)
