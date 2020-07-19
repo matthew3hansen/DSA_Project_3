@@ -1,6 +1,6 @@
 # Initalizations
-mapFileName = "randomizedMapWithLights.csv"
-streetNamesFileName = "streetNames.csv"
+mapFileName = "Csv-Files/randomizedMapWithLights.csv"
+streetNamesFileName = "Csv-Files/streetNames.csv"
 useNumbersInsteadOfStreetNames = True
 unsafeIntersectionWeight = 10
 safeIntersectionWeight = 1
