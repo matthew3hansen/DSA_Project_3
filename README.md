@@ -13,7 +13,7 @@ We recomend installing pygame to avoid any conflicts with running the simulator.
 
 ### Running the Program
 
-To get the directions that has the safest path type this into your terminal once you have downloaded and entered your preferred directory.
+To get the directions that has the safest path type this into your terminal once you have downloaded the zip file and entered your preferred directory.
 ```python3
 python3 main.py
 ```
