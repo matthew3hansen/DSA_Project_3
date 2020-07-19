@@ -9,7 +9,7 @@
 - [Pygame](https://www.pygame.org/) (not required to run main.py)
 
 ### Install
-We recomend installing pygame to avoid any conflicts with running the simulator. There has been some issues with Mac OS and pygame this forum might help (https://stackoverflow.com/questions/52718921/problems-getting-pygame-to-show-anything-but-a-blank-screen-on-macos-mojave)
+We recomend installing pygame to avoid any conflicts with running the simulator. There has been some issues with Mac OS runnning pygame this forum might help (https://stackoverflow.com/questions/52718921/problems-getting-pygame-to-show-anything-but-a-blank-screen-on-macos-mojave)
 
 ### Running the Program
 
