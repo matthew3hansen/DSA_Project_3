@@ -36,6 +36,7 @@ python3 pygameMain.py
 
 ### Next Steps for Safest Path Finder
 
+If we had more time we would implement: 
 - [Using Google's Map API to get directions in real time]
 - [Updating the user experience by making an Andriod/Iphone application]
 
