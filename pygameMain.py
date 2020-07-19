@@ -46,8 +46,6 @@ class Grid:
 				self.squares[row][col].selected_second = True
 				self.numbers_selected += 1
 				
-				
-
 
 class Square:
 	def __init__(self, width):
