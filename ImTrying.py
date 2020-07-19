@@ -2,11 +2,9 @@
 import time
 
 #toggle-able variables here (e.g. "define" variables)
-mapFileName = "randomizedMapWithLights.csv"
+mapFileName = "randomizedCityMap.csv"
 streetNamesFileName = "streetNames.csv"
 useNumbersInsteadOfStreetNames = True
-unsafeIntersectionWeight = 10
-safeIntersectionWeight = 1
 
 
 #Node class that will represent a street intersection
@@ -112,7 +110,7 @@ def createAdjacencyList(rows, columns):
         j = 0
         for singleChar in readInLine:
             #if intersection is open
-            if singleChar == 'O' or singleChar == 'L':
+            if singleChar != '0':
                 array[i][j] = Node()
                 #assign street name to intersection
                 if useNumbersInsteadOfStreetNames == True:
@@ -120,10 +118,7 @@ def createAdjacencyList(rows, columns):
                 else:
                     array[i][j].intersectionName = horizontalStreetNames[i] + " / " + verticalStreetNames[j]
                 #assign weight to intersection
-                if singleChar == 'L':
-                    array[i][j].weight = safeIntersectionWeight
-                else:
-                    array[i][j].weight = unsafeIntersectionWeight
+                array[i][j].weight = int(singleChar)
             else:
                 array[i][j] = None
             #iterate to next j index
@@ -183,12 +178,15 @@ def findShortestPathSingle(adjacencyList, intersectionNameDictionary, sourceInte
     startTime = time.time()
     #first check if the input intersections exist at all in the adjacency list
     if(sourceIntersectionName not in intersectionNameDictionary.keys()):
-        print("Specified source street intersection: \"", sourceIntersectionName, "\" was not recognized as a valid starting point.", sep = '')
+        print("Specified source street intersection: \"", sourceIntersectionName, "\" was not recognized as a valid starting point.\n", sep = '')
         return
     if(destinationIntersectionName not in intersectionNameDictionary.keys()):
-        print("Specified destination street intersection: \"", destinationIntersectionName, "\" was not recognized as a valid starting point.", sep = '')
+        print("Specified destination street intersection: \"", destinationIntersectionName, "\" was not recognized as a valid starting point.\n", sep = '')
         return
-
+    #check if the source and destination are the same
+    if(sourceIntersectionName == destinationIntersectionName):
+        print("Specified source and destination street intersections: \"", destinationIntersectionName, "\" are the same, please enter different points.\n", sep = '')
+        return
 
     #set the source intersection's "dist" value to 0
     adjacencyList[intersectionNameDictionary[sourceIntersectionName]].dist = 0
@@ -256,12 +254,15 @@ def findShortestPathMultiple(adjacencyList, intersectionNameDictionary, sourceIn
     startTime = time.time()
     #first check if the input intersections exist at all in the adjacency list
     if(sourceIntersectionName not in intersectionNameDictionary.keys()):
-        print("Specified source street intersection: \"", sourceIntersectionName, "\" was not recognized as a valid starting point.", sep = '')
+        print("Specified source street intersection: \"", sourceIntersectionName, "\" was not recognized as a valid starting point.\n", sep = '')
         return
     if(destinationIntersectionName not in intersectionNameDictionary.keys()):
-        print("Specified destination street intersection: \"", destinationIntersectionName, "\" was not recognized as a valid starting point.", sep = '')
+        print("Specified destination street intersection: \"", destinationIntersectionName, "\" was not recognized as a valid starting point.\n", sep = '')
         return
-
+    #check if the source and destination are the same
+    if(sourceIntersectionName == destinationIntersectionName):
+        print("Specified source and destination street intersections: \"", destinationIntersectionName, "\" are the same, please enter different points.\n", sep = '')
+        return
 
     #set the source intersection's "dist" value to 0
     adjacencyList[intersectionNameDictionary[sourceIntersectionName]].dist = 0
@@ -383,7 +384,7 @@ if __name__ == '__main__':
                 #execute Diikstra's algorithm for single path
                 findShortestPathSingle(adjacencyList, intersectionNameDictionary, sourceIntersectionName, destinationIntersectionName, False)
         elif(userInput == "2"):
-            sourceIntersectionName = input("Enter name of starting street intersection (e.g. \"Baker / Wilson\": ")
+            sourceIntersectionName = input("Enter name of starting street intersection (e.g. \"Baker / Wilson\"): ")
             destinationIntersectionName = input("Enter name of destination street intersection (e.g. \"Chevrolet / Sushi\"): ")
             weightMode = input("Factor in crime map? (\"y\") or find the strictly shortest physical path (\"n\")?: ")
             while(weightMode != "y" and weightMode != "n"):
