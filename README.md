@@ -4,7 +4,7 @@
 
 ### Motivation
 
-In the wake of Covid-19 and social unrest, crime rates are steadily increasing, especially in urban areas. Walking somewhere could be especially dangerous if the person isnt aware of the current crime rates in the area.
+In the wake of Covid-19 and social unrest, crime rates are steadily increasing, especially in urban areas. Walking somewhere could be especially dangerous if the person isn't aware of the current crime rates in the area.
 
 ### Features
 
