@@ -33,21 +33,23 @@ def floodfill(storeArray,i,j):
         else:
             storeArray[xStack[0]][yStack[0]] = 'A'
 
-        if xStack[0]-1 >= 0:
-            xStack.append(xStack[0] - 1)
-            yStack.append(yStack[0])
-        if xStack[0]+1 < GRIDSIZE:
-            xStack.append(xStack[0]+1)
-            yStack.append(yStack[0])
-        if yStack[0]-1 >= 0:
-            xStack.append(xStack[0])
-            yStack.append(yStack[0]-1)
-        if yStack[0] + 1 < GRIDSIZE:
-            xStack.append(xStack[0])
-            yStack.append(yStack[0]+1)
+            if xStack[0]-1 >= 0:
+                xStack.append(xStack[0] - 1)
+                yStack.append(yStack[0])
+            if xStack[0]+1 < GRIDSIZE:
+                xStack.append(xStack[0]+1)
+                yStack.append(yStack[0])
+            if yStack[0]-1 >= 0:
+                xStack.append(xStack[0])
+                yStack.append(yStack[0]-1)
+            if yStack[0] + 1 < GRIDSIZE:
+                xStack.append(xStack[0])
+                yStack.append(yStack[0]+1)
 
-        xStack.pop()
-        yStack.pop()
+            xStack.pop()
+            yStack.pop()
+            print("lol")
+    print("Done")
 
 
 
