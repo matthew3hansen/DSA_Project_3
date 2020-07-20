@@ -1,6 +1,6 @@
 from Mapinit import mapFileName, streetNamesFileName, useNumbersInsteadOfStreetNames, Node, safeIntersectionWeight, \
     unsafeIntersectionWeight
-
+import time
 
 # function that finds the number of rows and columns from the file
 # and stores them in the passed in row and column variables
@@ -108,47 +108,50 @@ def insertNodes(rows, columns, verticalStreetNames, horizontalStreetNames):
 
 def createAdjacencyList(rows, columns):
     # open and read in street names
+    startTime = time.time()
     verticalStreetNames, horizontalStreetNames = readFile(rows, columns)
     array = insertNodes(rows, columns, verticalStreetNames, horizontalStreetNames)
 
-    """nested for-loop that populates an adjaency list
-    this for-loop scans over the previously made 2-D map from left-to-right, up-to-down
-    and adds not-blocked Nodes to the outer array, then an inner array data member of that Node is populated
-    with the Nodes that are adjacent and not-blocked
-    outer array storing the unique Nodes"""
+
+    #nested for-loop that populates an adjaency list
+    #this for-loop scans over the previously made 2-D map from left-to-right, up-to-down
+    #and adds not-blocked Nodes to the outer array, then an inner array data member of that Node is populated
+    #with the Nodes that are adjacent and not-blocked
+        #outer array storing the unique Nodes
     adjacencyList = []
-    # dictionary that will map between a string intersection name with the relevant Node object
+    #dictionary that will map between a string intersection name with the relevant Node object
     intersectionNameDictionary = {}
-    # counter variable to keep track of how many non-blocked Nodes are added to the adjacency list, for the above dictionary
+    #counter variable to keep track of how many non-blocked Nodes are added to the adjacency list, for the above dictionary
     runningIndexOfList = -1
     for i in range(0, rows):
         for j in range(0, columns):
-            # if the matrix element being iterated on is None (blocked intersection), then there
-            # is no node, and no outgoing connections can be made, so just continueto the next element
+            #if the matrix element being iterated on is None (blocked intersection), then there
+            #is no node, and no outgoing connections can be made, so just continueto the next element
             if array[i][j] == None:
                 continue
-            # otherwise, if the Node exists, create an entry to the dictionary that correlates the name
-            # of the intersection with its index position in the adjacency array
+            #otherwise, if the Node exists, create an entry to the dictionary that correlates the name
+            #of the intersection with its index position in the adjacency array
             runningIndexOfList += 1
             intersectionNameDictionary[array[i][j].intersectionName] = runningIndexOfList
             adjacencyList.append(array[i][j])
-            # check the four neighbors of the nodes, and add them to the inner array data member of the Node
-            # add north if it exists
-            if i - 1 >= 0 and array[i - 1][j] != None:
-                adjacencyList[runningIndexOfList].adjacentNodes.append(array[i - 1][j])
-            # add south if it exists
-            if i + 1 < rows and array[i + 1][j] != None:
-                adjacencyList[runningIndexOfList].adjacentNodes.append(array[i + 1][j])
-            # add east if it exists
+            #check the four neighbors of the nodes, and add them to the inner array data member of the Node
+            #add north if it exists
+            if i - 1 >= 0 and array[i-1][j] != None:
+                adjacencyList[runningIndexOfList].adjacentNodes.append(array[i-1][j])
+            #add south if it exists
+            if i + 1 < rows and array[i+1][j] != None:
+                adjacencyList[runningIndexOfList].adjacentNodes.append(array[i+1][j])
+            #add east if it exists
             if j + 1 < columns and array[i][j + 1] != None:
                 adjacencyList[runningIndexOfList].adjacentNodes.append(array[i][j + 1])
-            # add west if it exists
+            #add west if it exists
             if j - 1 >= 0 and array[i][j - 1] != None:
                 adjacencyList[runningIndexOfList].adjacentNodes.append(array[i][j - 1])
 
-    print("Loaded map from \"", mapFileName, "\" and street names from \"", streetNamesFileName, "\" successfully!",
-          sep='')
-    # return the created 2-D adjacency list
+    print("Loaded map from \"", mapFileName, "\" and street names from \"", streetNamesFileName,"\" successfully! ", sep = '')
+    print("Map loading execution time was:", (time.time() - startTime) * 1000, "milliseconds")
+    print()
+    #return the created 2-D adjacency list
     return adjacencyList, intersectionNameDictionary
 
 
@@ -226,4 +229,189 @@ def findShortestPathAdjacencyList(adjacencyList, intersectionNameDictionary, sou
                 pathStack.pop()
                 stepCounter += 1
             print("\n\n")
+            return
+def findShortestPathSingle(adjacencyList, intersectionNameDictionary, sourceIntersectionName, destinationIntersectionName, usingNodesWeights):
+    #keep track of the execution time to output at the end of the function
+    startTime = time.time()
+    #first check if the input intersections exist at all in the adjacency list
+    if(sourceIntersectionName not in intersectionNameDictionary.keys()):
+        print("Specified source street intersection: \"", sourceIntersectionName, "\" was not recognized as a valid starting point.\n", sep = '')
+        return
+    if(destinationIntersectionName not in intersectionNameDictionary.keys()):
+        print("Specified destination street intersection: \"", destinationIntersectionName, "\" was not recognized as a valid starting point.\n", sep = '')
+        return
+    #check if the source and destination are the same
+    if(sourceIntersectionName == destinationIntersectionName):
+        print("Specified source and destination street intersections: \"", destinationIntersectionName, "\" are the same, please enter different points.\n", sep = '')
+        return
+
+    #set the source intersection's "dist" value to 0
+    adjacencyList[intersectionNameDictionary[sourceIntersectionName]].dist = 0
+    #for-loop over all the unique nodes, performing Dijikstra's algorithm
+    visitedCount = 0
+    while(visitedCount != len(adjacencyList)):
+        #first find the node with the lowest distance
+        minDistance = float("inf")
+        minIndex = 0
+        for i in range(len(adjacencyList)):
+            if (adjacencyList[i].visited == False and adjacencyList[i].dist < minDistance):
+                minDistance = adjacencyList[i].dist
+                minIndex = i
+        #act upon the chosen minimum distance node
+        #mark the chosen node as visited
+        adjacencyList[minIndex].visited = True
+        #set the distance of the chosen minimum distance node's neighbors
+        for j in range(len(adjacencyList[minIndex].adjacentNodes)):
+            if(usingNodesWeights == False):
+                weight = 1
+            else:
+                weight = adjacencyList[minIndex].adjacentNodes[j].weight
+            if (adjacencyList[minIndex].dist + weight < adjacencyList[minIndex].adjacentNodes[j].dist):
+                adjacencyList[minIndex].adjacentNodes[j].dist = adjacencyList[minIndex].dist + weight
+                #set this neighbor node's "previousPath" variable to record how it got to there
+                if len(adjacencyList[minIndex].adjacentNodes[j].previousPath) == 0:
+                    adjacencyList[minIndex].adjacentNodes[j].previousPath.append(adjacencyList[minIndex])
+                else:
+                    adjacencyList[minIndex].adjacentNodes[j].previousPath[0] = adjacencyList[minIndex]
+        #iterate the counter and continue on the while loop
+        visitedCount += 1
+        #however, before continuing the loop, check if the just-visited node was the destination node,
+        #and stop the while loop if it was
+        if adjacencyList[minIndex].intersectionName == destinationIntersectionName:
+            print("A single shortest path from: \"", sourceIntersectionName, "\" to \"", destinationIntersectionName, "\" is:", sep='')
+            if usingNodesWeights == True:
+                print("(with taking account of crime map weights)")
+            else:
+                print("(with strictly by distance, ignoring crime map weights)")
+            #create a stack and backtrack from the destination node, following each Node's "previousPath" variable
+            pointerToPreviousNode = adjacencyList[minIndex]
+            pathStack = []
+            while(pointerToPreviousNode != None):
+                pathStack.append(pointerToPreviousNode)
+                if len(pointerToPreviousNode.previousPath) == 0:
+                    break
+                pointerToPreviousNode = pointerToPreviousNode.previousPath[0]
+            print("Total number of steps to take:", len(pathStack) - 1)
+            #print out the route
+            print("Start on: \"", pathStack[len(pathStack) - 1].intersectionName, "\"", sep='')
+            pathStack.pop()
+            stepCounter = 1
+            while(len(pathStack) != 0):
+                print("Step #", stepCounter, ": Go to street intersection \"", pathStack[len(pathStack) - 1].intersectionName, "\"", sep='')
+                pathStack.pop()
+                stepCounter += 1
+            print("Diijkstra's shortest path algorithm for a single path execution time was :", (time.time() - startTime) * 1000, "milliseconds")
+            print()
+            return
+
+#do the same as the "findShortestPathAdjacencyList()" function above,
+#except find multiple paths if there are multiple routes of the same shortest-length
+def findShortestPathMultiple(adjacencyList, intersectionNameDictionary, sourceIntersectionName, destinationIntersectionName, usingNodesWeights):
+    #keep track of the execution time to output at the end of the function
+    startTime = time.time()
+    #first check if the input intersections exist at all in the adjacency list
+    if(sourceIntersectionName not in intersectionNameDictionary.keys()):
+        print("Specified source street intersection: \"", sourceIntersectionName, "\" was not recognized as a valid starting point.\n", sep = '')
+        return
+    if(destinationIntersectionName not in intersectionNameDictionary.keys()):
+        print("Specified destination street intersection: \"", destinationIntersectionName, "\" was not recognized as a valid starting point.\n", sep = '')
+        return
+    #check if the source and destination are the same
+    if(sourceIntersectionName == destinationIntersectionName):
+        print("Specified source and destination street intersections: \"", destinationIntersectionName, "\" are the same, please enter different points.\n", sep = '')
+        return
+
+    #set the source intersection's "dist" value to 0
+    adjacencyList[intersectionNameDictionary[sourceIntersectionName]].dist = 0
+    #for-loop over all the unique nodes, performing Dijikstra's algorithm
+    visitedCount = 0
+    #used to know when to stop calculating paths
+    destinationNodeMinimumDistance = float("inf")
+    destinationNodeIndex = -1
+    while(visitedCount != len(adjacencyList)):
+        #first find the node with the lowest distance
+        minDistance = float("inf")
+        minIndex = 0
+        for i in range(len(adjacencyList)):
+            if (adjacencyList[i].visited == False and adjacencyList[i].dist < minDistance):
+                minDistance = adjacencyList[i].dist
+                minIndex = i
+        #act upon the chosen minimum distance node
+        #mark the chosen node as visited
+        adjacencyList[minIndex].visited = True
+        #set the distance of the chosen minimum distance node's neighbors
+        for j in range(len(adjacencyList[minIndex].adjacentNodes)):
+            if(usingNodesWeights == False):
+                weight = 1
+            else:
+                weight = adjacencyList[minIndex].adjacentNodes[j].weight
+            if (adjacencyList[minIndex].dist + weight < adjacencyList[minIndex].adjacentNodes[j].dist):
+                adjacencyList[minIndex].adjacentNodes[j].dist = adjacencyList[minIndex].dist + weight
+                #set this neighbor node's "previousPath" variable to record how it got to there
+                adjacencyList[minIndex].adjacentNodes[j].previousPath.clear()
+                adjacencyList[minIndex].adjacentNodes[j].previousPath.append(adjacencyList[minIndex])
+            elif (adjacencyList[minIndex].dist + weight == adjacencyList[minIndex].adjacentNodes[j].dist):
+                #add this alternate path to the "previousPath" variable
+                adjacencyList[minIndex].adjacentNodes[j].previousPath.append(adjacencyList[minIndex])
+        #iterate the counter and continue on the while loop
+        visitedCount += 1
+        #however, before continuing the loop, check if the just-visited node was the destination node, in which case,
+        #store the minimum distance and index of that destination node
+        if adjacencyList[minIndex].intersectionName == destinationIntersectionName:
+            destinationNodeMinimumDistance = adjacencyList[minIndex].dist
+            destinationNodeIndex = minIndex
+        #if the currently iterated on Node has a dist higher than the destination node's, then all paths to the destination node have
+        #already been found, so end the algorithm's while loop
+        if adjacencyList[minIndex].dist > destinationNodeMinimumDistance:
+            print("A single shortest path from: \"", sourceIntersectionName, "\" to \"", destinationIntersectionName, "\" is:", sep='')
+            if usingNodesWeights == True:
+                print("(with taking account of crime map weights)")
+            else:
+                print("(with strictly by distance, ignoring crime map weights)")
+            #create a 2-D array representing the multiple paths possible
+            #and backtrack from the destination node, following each Node's "previousPath" possible variable
+            #creating a new inner array for each branching path
+            pathStack = []
+            pathStack.append([])
+            pathStack[0].append(adjacencyList[destinationNodeIndex])
+            jIndex = -1
+            sourceReached = False
+            while(sourceReached == False):
+                jIndex += 1
+                originalArrayLength = len(pathStack)
+                index = 0
+                for i in range(originalArrayLength):
+                    #if there are multiple entries in the looked at Node's previous path array,
+                    #then insert new subarrays and copy the path from the "parent" subarray,
+                    #to represent branching of paths
+                    #and then extend each of these subarrays with the different Nodes in the path array
+                    if(len(pathStack[index][jIndex].previousPath) > 1):
+                        for j in range(len(pathStack[index][jIndex].previousPath) - 1):
+                            newSubarray = list(pathStack[index])
+                            pathStack.insert(index + 1, newSubarray)
+                        for j in range(len(pathStack[index][jIndex].previousPath)):
+                            pathStack[index + j].append(pathStack[index][jIndex].previousPath[j])
+                        index += len(pathStack[index][jIndex].previousPath)
+                    #otherwise, if there is just one entry in the looked at Node's previous path,
+                    #then don't add any new subarrays, and just extend the subarray with the next node
+                    else:
+                        pathStack[index].append(pathStack[index][jIndex].previousPath[0])
+                        index += 1
+                if pathStack[0][jIndex].previousPath[0].intersectionName == sourceIntersectionName:
+                    sourceReached = True
+            print("Total number of steps to take:", len(pathStack[0]) - 1)
+            print(len(pathStack), "equivalent minimum length paths were found.")
+            print()
+            #print out the routes
+            for i in range(len(pathStack)):
+                print("POSSIBLE PATH #", i + 1, sep='')
+                print("Start on: \"", pathStack[i][len(pathStack[i]) - 1].intersectionName, "\"", sep='')
+                pathStack[i].pop()
+                stepCounter = 1
+                while(len(pathStack[i]) != 0):
+                    print("Step #", stepCounter, ": Go to street intersection \"", pathStack[i][len(pathStack[i]) - 1].intersectionName, "\"", sep='')
+                    pathStack[i].pop()
+                    stepCounter += 1
+                print()
+            print("Diijkstra's shortest path algorithm for multiple paths execution time was :", (time.time() - startTime) * 1000, "milliseconds")
             return
