@@ -129,7 +129,7 @@ def createArray(rows, columns):
 def createAdjacencyList(array, rows, columns):
     #keep track of the execution time to output at the end of the function
     startTime = time.time()
-    #nested for-loop that populates an adjaency list
+    #nested for-loop that populates an adjacency list
     #this for-loop scans over the previously made 2-D map from left-to-right, up-to-down
     #and adds not-blocked Nodes to the outer array, then an inner array data member of that Node is populated
     #with the Nodes that are adjacent and not-blocked
@@ -381,24 +381,24 @@ if __name__ == '__main__':
             #load the map
             adjacencyList, intersectionNameDictionary = createAdjacencyList(array, rows, columns)
             if(weightMode == "y"):
-                #execute Diikstra's algorithm for single path
+                #execute Diikstra's algorithm for single path with factoring weights
                 findShortestPathSingle(adjacencyList, intersectionNameDictionary, sourceIntersectionName, destinationIntersectionName, True)
             else:
-                #execute Diikstra's algorithm for single path
+                #execute Diikstra's algorithm for single path without factoring weights
                 findShortestPathSingle(adjacencyList, intersectionNameDictionary, sourceIntersectionName, destinationIntersectionName, False)
         elif(userInput == "2"):
             sourceIntersectionName = input("Enter name of starting street intersection (e.g. \"Baker / Wilson\"): ")
             destinationIntersectionName = input("Enter name of destination street intersection (e.g. \"Chevrolet / Sushi\"): ")
             weightMode = input("Factor in crime map? (\"y\") or find the strictly shortest physical path (\"n\")?: ")
             while(weightMode != "y" and weightMode != "n"):
-                weightMode = input("Factor in crime map? (\"y\") or find the st1ictly shortest physical path (\"n\")?: ")
+                weightMode = input("Factor in crime map? (\"y\") or find the strictly shortest physical path (\"n\")?: ")
             #load the map
             adjacencyList, intersectionNameDictionary = createAdjacencyList(array, rows, columns)
             if(weightMode == "y"):
-                #execute Diikstra's algorithm for single path
+                #execute Diikstra's algorithm for multiple paths with factoring of weights
                 findShortestPathMultiple(adjacencyList, intersectionNameDictionary, sourceIntersectionName, destinationIntersectionName, True)
             else:
-                #execute Diikstra's algorithm for single path1
+                #execute Diikstra's algorithm for multiple paths without factoring in weights
                 findShortestPathMultiple(adjacencyList, intersectionNameDictionary, sourceIntersectionName, destinationIntersectionName, False)
         userInput = input("Enter \"1\" to find a single shortest path, enter \"2\" to find multiple shortest paths, enter \"exit\" to exit: ")
         '''
