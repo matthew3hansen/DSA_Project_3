@@ -271,7 +271,7 @@ def findShortestPathMultiple(adjacencyList, intersectionNameDictionary, sourceIn
         minDistance = float("inf")
         minIndex = 0
         for i in range(len(adjacencyList)):
-            if (adjacencyList[i].visited == False and adjacencyList[i].dist < minDistance):
+            if (adjacencyList[i].dist < minDistance):
                 minDistance = adjacencyList[i].dist
                 minIndex = i
         #act upon the chosen minimum distance node
@@ -373,7 +373,7 @@ if __name__ == '__main__':
             while(weightMode != "y" and weightMode != "n"):
                 weightMode = input("Factor in crime map? (\"y\") or find the strictly shortest physical path (\"n\")?: ")
             #load the map
-            adjacencyList, intersectionNameDictionary = createAdjacencyList(rows, columns)
+            adjacencyList, intersectionNameDictionary = createAdjacencyList(array, rows, columns)
             if(weightMode == "y"):
                 #execute Diikstra's algorithm for single path
                 findShortestPathSingle(adjacencyList, intersectionNameDictionary, sourceIntersectionName, destinationIntersectionName, True)
@@ -387,7 +387,7 @@ if __name__ == '__main__':
             while(weightMode != "y" and weightMode != "n"):
                 weightMode = input("Factor in crime map? (\"y\") or find the st1ictly shortest physical path (\"n\")?: ")
             #load the map
-            adjacencyList, intersectionNameDictionary = createAdjacencyList(rows, columns)
+            adjacencyList, intersectionNameDictionary = createAdjacencyList(array, rows, columns)
             if(weightMode == "y"):
                 #execute Diikstra's algorithm for single path
                 findShortestPathMultiple(adjacencyList, intersectionNameDictionary, sourceIntersectionName, destinationIntersectionName, True)
