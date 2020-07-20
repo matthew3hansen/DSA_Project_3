@@ -115,7 +115,7 @@ int main()
     outFile.open(OUTPUTFILENAME);
     for (int i = 0; i < GRIDSIZE; i++)
     {
-        for (int j = 0; j < GRIDSIZE * 2; j++)
+        for (int j = 0; j < GRIDSIZE * 2 - 1; j++)
         {
             outFile << storeArray[i][j];
         }
