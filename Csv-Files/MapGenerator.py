@@ -26,7 +26,7 @@ def floodfill(storeArray, i, j):
         xStack.append(i)
         yStack.append(j + 1)
 
-    while xStack:
+    while len(xStack) != 0:
         if storeArray[xStack[0]][yStack[0]] == 'A' or storeArray[xStack[0]][yStack[0]] == '0':
             xStack.pop()
             yStack.pop()
@@ -67,7 +67,7 @@ if __name__ == '__main__':
     RANGEOFCRIMEVALUES = 9
     random.seed(time.time())
     # initalize 2D array
-    storeArray = [[0 for x in range(GRIDSIZE)] for y in range(GRIDSIZE * 2)]
+    storeArray = [['' for x in range(GRIDSIZE)] for y in range(GRIDSIZE * 2)]
 
     for i in range(0, GRIDSIZE):
         for j in range(0, GRIDSIZE):
@@ -88,7 +88,7 @@ if __name__ == '__main__':
         randomInt = random.randint(1, 11)
         storeArray[i][GRIDSIZE - 1] = str(randomInt) + '0'
 
-    temp = [[0 for x in range(GRIDSIZE)] for y in range(GRIDSIZE)]
+    temp = [['' for x in range(GRIDSIZE)] for y in range(GRIDSIZE)]
 
     for i in range(0, GRIDSIZE):
         for j in range(0, GRIDSIZE):
@@ -100,9 +100,9 @@ if __name__ == '__main__':
                 continue
 
             # reset temp array
-            for i in range(0, GRIDSIZE):
-                for j in range(0, GRIDSIZE):
-                    temp[i][j] = storeArray[i][j]
+            for k in range(0, GRIDSIZE):
+                for l in range(0, GRIDSIZE):
+                    temp[k][l] = storeArray[k][l]
             print("i ", i, " j ", j, "\n")
             shiftCount = 1
             while not checkIfNotEnclosed(temp, i, j):
