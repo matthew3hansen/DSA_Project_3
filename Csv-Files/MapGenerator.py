@@ -26,7 +26,8 @@ def floodfill(storeArray, i, j):
         xStack.append(i)
         yStack.append(j + 1)
 
-    while len(xStack) != 0:
+    while len(xStack) > 0:
+        #front of queue is at 0 index
         if storeArray[xStack[0]][yStack[0]] == 'A' or storeArray[xStack[0]][yStack[0]] == '0':
             xStack.pop()
             yStack.pop()
@@ -65,9 +66,15 @@ if __name__ == '__main__':
     GRIDSIZE = 500
     PERCENTBUILDINGS = 20
     RANGEOFCRIMEVALUES = 9
-    random.seed(time.time())
+    random.seed(time.time())  # equivalent to srand(time(NULL)) in c++
     # initalize 2D array
     storeArray = [['' for x in range(GRIDSIZE)] for y in range(GRIDSIZE * 2)]
+    """ #testing
+    for i in range(GRIDSIZE):
+        for j in range(GRIDSIZE):
+            print('{:500}'.format(storeArray[i][j]))
+        print("\n")
+    """
 
     for i in range(0, GRIDSIZE):
         for j in range(0, GRIDSIZE):
@@ -78,8 +85,8 @@ if __name__ == '__main__':
             else:
                 randomInt = random.randint(1, 11)
                 storeArray[i][j] = str(randomInt) + '0'
-    # Make borders clear
 
+    # Declaring borders
     for i in range(0, GRIDSIZE):
         randomInt = random.randint(1, 11)
         storeArray[0][i] = str(randomInt) + '0'
@@ -88,23 +95,28 @@ if __name__ == '__main__':
         randomInt = random.randint(1, 11)
         storeArray[i][GRIDSIZE - 1] = str(randomInt) + '0'
 
-    temp = [['' for x in range(GRIDSIZE)] for y in range(GRIDSIZE)]
+    # Initializing temp 2D array
+    temp = [['' for x in range(GRIDSIZE)] for y in range(GRIDSIZE)]  # setting all to '0'
 
     for i in range(0, GRIDSIZE):
         for j in range(0, GRIDSIZE):
-            temp[i][j] = storeArray[i][j]
+            temp[i][j] = storeArray[i][j]  # setting to storeArray values
+    # BUG IS SOMEWHERE HERE
+
 
     for i in range(1, GRIDSIZE - 1):
         for j in range(1, GRIDSIZE - 1):
             if temp[i][j] == '0' or temp[i][j] == 'A':
                 continue
-
             # reset temp array
-            for k in range(0, GRIDSIZE):
-                for l in range(0, GRIDSIZE):
-                    temp[k][l] = storeArray[k][l]
-            print("i ", i, " j ", j, "\n")
+            for i in range(0, GRIDSIZE):
+                for j in range(0, GRIDSIZE):
+                    temp[i][j] = storeArray[i][j]
+            # print("i ", i, " j ", j, "\n")
+            #print("before i ", i, " j ", j, "\n")
             shiftCount = 1
+
+            # Here is the bug,
             while not checkIfNotEnclosed(temp, i, j):
                 print("Found index ", i, " ", j,
                       "that is completely enclosed, blindly opening up one block to the left and checking again.\n ")
@@ -112,9 +124,10 @@ if __name__ == '__main__':
                 storeArray[i - shiftCount][j] = str(randomInt) + '0'
                 shiftCount += 1
 
-                for k in range(0, GRIDSIZE):
-                    for l in range(0, GRIDSIZE):
-                        temp[k][l] = storeArray[k][l]
+                for i in range(0, GRIDSIZE):
+                    for j in range(0, GRIDSIZE):
+                        temp[i][j] = storeArray[i][j]
+
 
     for i in range(0, GRIDSIZE):
         j = GRIDSIZE - 1
