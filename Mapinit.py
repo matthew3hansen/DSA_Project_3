@@ -1,10 +1,11 @@
 # Initalizations
 #mapFileName = "Csv-Files/randomizedMapWithLights.csv"
-mapFileName = "Csv-Files/randomizedCityMap.csv"
+#mapFileName = "Csv-Files/randomizedCityMap.csv"
+mapFileName = "Csv-Files/small_grid.csv"
 streetNamesFileName = "Csv-Files/streetNames.csv"
 useNumbersInsteadOfStreetNames = True
-unsafeIntersectionWeight = 10
-safeIntersectionWeight = 1
+#unsafeIntersectionWeight = 10
+#safeIntersectionWeight = 1
 
 #Node class that will represent a street intersection
 class Node:
