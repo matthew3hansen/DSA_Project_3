@@ -85,15 +85,18 @@ class Grid:
 	def find_first_selected(self):
 		for i in range(self.rows):
 			for j in range(self.cols):
-				if self.squares[i][j].selected_first:
-					return i, j
+				if self.squares[i][j].node != None:
+					if self.squares[i][j].selected_first:
+						return i, j
 		return -1, -1
 
 	def find_second_selected(self):
 		for i in range(self.rows):
 			for j in range(self.cols):
-				if self.squares[i][j].selected_second:
-					return i, j
+				if self.squares[i][j].node != None:
+					if self.squares[i][j].selected_second:
+						return i, j
+		return -1, -1
 
 	def get_row_col_of_square(self, name):
 		for i in range(self.rows):
