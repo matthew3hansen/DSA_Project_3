@@ -2,6 +2,13 @@
 
 [![Python 3.x](https://img.shields.io/badge/python-3.x-blue.svg)](https://www.python.org/downloads/release/python-370/)
 
+<br />
+<p align="center">
+  <a href="https://github.com/matthew3hansen/DSA_Project_3">
+    <img src="Background\ images/image.png" alt="Logo" width="256">
+  </a>
+  <br />
+
 ### Motivation
 
 In the wake of Covid-19 and social unrest, crime rates are steadily increasing, especially in urban areas. Walking somewhere could be especially dangerous if the person isn't aware of the current crime rates in the area.
