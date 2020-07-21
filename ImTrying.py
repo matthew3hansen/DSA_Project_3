@@ -359,7 +359,7 @@ def findShortestPathMultiple(adjacencyList, intersectionNameDictionary, sourceIn
             print("Diijkstra's shortest path algorithm for multiple paths execution time was :", (time.time() - startTime), "seconds")
             return
 
-def shortest_path_visual(aList, source):
+def shortest_path_visual(aList, source, type_of_path):
     #keep track of the execution time to output at the end of the function
     start_time = time.time()
 
@@ -389,9 +389,16 @@ def shortest_path_visual(aList, source):
 
         computed.append(aList[min_index])
         for i in range(len(aList[min_index].adjacentNodes)):
-            if min_value + aList[min_index].adjacentNodes[i][0].weight < weight_map[aList[min_index].adjacentNodes[i][0].intersectionName]:
-                weight_map[aList[min_index].adjacentNodes[i][0].intersectionName] = min_value + aList[min_index].adjacentNodes[i][0].weight
-                previous_map[aList[min_index].adjacentNodes[i][0].intersectionName] = aList[min_index].intersectionName
+            #Safest Path
+            if type_of_path == "Safest":
+                if min_value + aList[min_index].adjacentNodes[i][0].weight < weight_map[aList[min_index].adjacentNodes[i][0].intersectionName]:
+                    weight_map[aList[min_index].adjacentNodes[i][0].intersectionName] = min_value + aList[min_index].adjacentNodes[i][0].weight
+                    previous_map[aList[min_index].adjacentNodes[i][0].intersectionName] = aList[min_index].intersectionName
+            #Shortest Path
+            elif type_of_path == "Shortest":
+                if min_value + 1 < weight_map[aList[min_index].adjacentNodes[i][0].intersectionName]:
+                    weight_map[aList[min_index].adjacentNodes[i][0].intersectionName] = min_value + 1
+                    previous_map[aList[min_index].adjacentNodes[i][0].intersectionName] = aList[min_index].intersectionName
 
     return weight_map, previous_map
 
