@@ -2,7 +2,7 @@
 import time
 
 #toggle-able variables here (e.g. "define" variables)
-mapFileName = "small_grid.csv"
+mapFileName = "small_grid.csv"#"randomizedCityMap.csv"
 streetNamesFileName = "streetNames.csv"
 useNumbersInsteadOfStreetNames = True
 
@@ -21,6 +21,8 @@ class Node:
         self.weight = float("inf")
         #storing the path(s) used for Dijikstra
         self.previousPath = []
+        #visited flag used for the multiple-path version of Dijikstra
+        self.visited = False
 
 #function that finds the number of rows and columns from the file
 #and stores them in the passed in row and column variables
@@ -59,9 +61,6 @@ def findDimensionsOfMap():
 #first, this function reads in street names for each latitude row and longitude column of the map,
 #storing them in a "horizontalStreetNames" array as well as a "verticalStreetNames" array
 #then this function creates a 2D array and populates it with created Nodes, if the associated map position isn't blocked
-#then this 2-D map is scanned from left-to-right, up-to-down, tile by tile,
-#during this scan, the Nodes are added to the newly created adjacency list, and the inner array for each added Node
-#is populated with the unblocked nodes to the north, south, east, and west of that Node
 def createArray(rows, columns):
     #open and read in street names
     streetNamesFileObject = open(streetNamesFileName, "r")
@@ -123,11 +122,13 @@ def createArray(rows, columns):
     readFileObject.close()
     return array
 
-
+#the 2-D array map is scanned from left-to-right, up-to-down, tile by tile,
+#during this scan, the Nodes are added to the newly created adjacency list, and the inner array for each added Node
+#is populated with the unblocked nodes to the north, south, east, and west of that Node
 def createAdjacencyList(array, rows, columns):
     #keep track of the execution time to output at the end of the function
     startTime = time.time()
-    #nested for-loop that populates an adjaency list
+    #nested for-loop that populates an adjacency list
     #this for-loop scans over the previously made 2-D map from left-to-right, up-to-down
     #and adds not-blocked Nodes to the outer array, then an inner array data member of that Node is populated
     #with the Nodes that are adjacent and not-blocked
@@ -180,7 +181,7 @@ def findShortestPathSingle(adjacencyList, intersectionNameDictionary, sourceInte
         print("Specified source street intersection: \"", sourceIntersectionName, "\" was not recognized as a valid starting point.\n", sep = '')
         return
     if(destinationIntersectionName not in intersectionNameDictionary.keys()):
-        print("Specified destination street intersection: \"", destinationIntersectionName, "\" was not recognized as a valid starting point.\n", sep = '')
+        print("Specified destination street intersection: \"", destinationIntersectionName, "\" was not recognized as a valid destination point.\n", sep = '')
         return
     #check if the source and destination are the same
     if(sourceIntersectionName == destinationIntersectionName):
@@ -244,8 +245,11 @@ def findShortestPathSingle(adjacencyList, intersectionNameDictionary, sourceInte
         #remove the visited Node from the adjacency list so that it is no longer scanned in future runs of the while loop
         adjacencyList.pop(minIndex)
 
-#do the same as the "findShortestPathSingle()" function above,
-#except find multiple paths if there are multiple routes of the same shortest-length
+#find multiple paths if there are multiple routes of the same shortest-length
+#the oveall procedure is similar the "findShortestPathSingle()" function above,
+#however there are differences in that the looked-at nodes are not removed from the adjacency list
+#as this somehow breaks the functionality of the function, and the writer of this function could not find out why after
+#hours of analysis
 def findShortestPathMultiple(adjacencyList, intersectionNameDictionary, sourceIntersectionName, destinationIntersectionName, usingNodesWeights):
     #keep track of the execution time to output at the end of the function
     startTime = time.time()
@@ -254,7 +258,7 @@ def findShortestPathMultiple(adjacencyList, intersectionNameDictionary, sourceIn
         print("Specified source street intersection: \"", sourceIntersectionName, "\" was not recognized as a valid starting point.\n", sep = '')
         return
     if(destinationIntersectionName not in intersectionNameDictionary.keys()):
-        print("Specified destination street intersection: \"", destinationIntersectionName, "\" was not recognized as a valid starting point.\n", sep = '')
+        print("Specified destination street intersection: \"", destinationIntersectionName, "\" was not recognized as a valid destination point.\n", sep = '')
         return
     #check if the source and destination are the same
     if(sourceIntersectionName == destinationIntersectionName):
@@ -266,15 +270,20 @@ def findShortestPathMultiple(adjacencyList, intersectionNameDictionary, sourceIn
     #used to know when to stop calculating paths
     destinationNodeMinimumDistance = float("inf")
     destinationNodeIndex = -1
-    while(len(adjacencyList) != 0):
+    lookedAtNodesCount = 0
+    while(lookedAtNodesCount != len(adjacencyList)):
         #first find the node with the lowest distance
         minDistance = float("inf")
         minIndex = 0
         for i in range(len(adjacencyList)):
-            if (adjacencyList[i].dist < minDistance):
+            if (adjacencyList[i].dist < minDistance and adjacencyList[i].visited == False):
                 minDistance = adjacencyList[i].dist
                 minIndex = i
         #act upon the chosen minimum distance node
+        #flag the node as visited
+        adjacencyList[minIndex].visited = True
+        #increment lookedAtNodesCount
+        lookedAtNodesCount += 1
         #set the distance of the chosen minimum distance node's neighbors
         for j in range(len(adjacencyList[minIndex].adjacentNodes)):
             if(usingNodesWeights == False):
@@ -349,9 +358,6 @@ def findShortestPathMultiple(adjacencyList, intersectionNameDictionary, sourceIn
                 print()
             print("Diijkstra's shortest path algorithm for multiple paths execution time was :", (time.time() - startTime), "seconds")
             return
-        #before continuing on the while loop,
-        #remove the visited Node from the adjacency list so that it is no longer scanned in future runs of the while loop
-        adjacencyList.pop(minIndex)
 
 def shortest_path_visual(aList, source):
     #keep track of the execution time to output at the end of the function
@@ -393,10 +399,8 @@ def shortest_path_visual(aList, source):
 if __name__ == '__main__':
     #first find the dimensions of the map
     rows, columns = findDimensionsOfMap()
-    array = createArray(rows, columns)
-    adjacencyList, intersectionNameDictionary = createAdjacencyList(array, rows, columns)
     #COMMAND MENU
-    '''
+    '''#DELETE TO RE-ENABLE
     userInput = input("Enter \"1\" to find a single shortest path, enter \"2\" to find multiple shortest paths, enter \"exit\" to exit: ")
     while(userInput != "exit"):
         #if the command was one of the cardinal directions, see if you can move there
@@ -408,7 +412,8 @@ if __name__ == '__main__':
             weightMode = input("Factor in crime map? (\"y\") or find the strictly shortest physical path (\"n\")?: ")
             while(weightMode != "y" and weightMode != "n"):
                 weightMode = input("Factor in crime map? (\"y\") or find the strictly shortest physical path (\"n\")?: ")
-            #load the map
+            #load a new map & adjacency list instance
+            array = createArray(rows, columns)
             adjacencyList, intersectionNameDictionary = createAdjacencyList(array, rows, columns)
             if(weightMode == "y"):
                 #execute Diikstra's algorithm for single path
@@ -422,7 +427,8 @@ if __name__ == '__main__':
             weightMode = input("Factor in crime map? (\"y\") or find the strictly shortest physical path (\"n\")?: ")
             while(weightMode != "y" and weightMode != "n"):
                 weightMode = input("Factor in crime map? (\"y\") or find the st1ictly shortest physical path (\"n\")?: ")
-            #load the map
+            #load a new map & adjacency list instance
+            array = createArray(rows, columns)
             adjacencyList, intersectionNameDictionary = createAdjacencyList(array, rows, columns)
             if(weightMode == "y"):
                 #execute Diikstra's algorithm for single path
@@ -431,4 +437,4 @@ if __name__ == '__main__':
                 #execute Diikstra's algorithm for single path1
                 findShortestPathMultiple(adjacencyList, intersectionNameDictionary, sourceIntersectionName, destinationIntersectionName, False)
         userInput = input("Enter \"1\" to find a single shortest path, enter \"2\" to find multiple shortest paths, enter \"exit\" to exit: ")
-    '''
+        '''#DELETE TO RE-ENABLE
