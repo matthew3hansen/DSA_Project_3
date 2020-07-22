@@ -215,8 +215,10 @@ def main_function(type_of_path):
             row_2, col_2 = board.find_second_selected()
             source = board.squares[row_1][col_1].node.intersectionName
             destination = board.squares[row_2][col_2].node.intersectionName
-            if type_of_path != "Both":
-                board.draw_path(window, previous_map, destination, source, (255, 69, 0))
+            if type_of_path == "Safest":
+                board.draw_path(window, previous_map, destination, source, (0, 255, 0))
+            elif type_of_path == "Shortest":
+            	board.draw_path(window, previous_map, destination, source, (255, 69, 0))
             else:
                 board.draw_path(window, previous_map_shortest, destination, source, (255, 69, 0))
                 board.draw_path(window, previous_map_safest, destination, source, (0, 255, 0))
