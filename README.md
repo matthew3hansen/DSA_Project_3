@@ -31,15 +31,12 @@ We recomend installing pygame to avoid any conflicts with running the simulator.
 
 ### Running the Program
 
-To get readable directions run  this into your terminal once you have downloaded the zip file and entered your preferred directory.
+Download the zip file, enter the folder's current directory. Then enter this command to get visual or readable directions.
 ```python3
 python3 main.py
 ```
 
-To get visual directions run
-```python3
-python3 pygameMain.py
-```
+
 
 ### Next Steps for Safest Path Finder
 
