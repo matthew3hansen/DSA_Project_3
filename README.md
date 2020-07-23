@@ -24,7 +24,7 @@ Since we are currently taking an intro Data structures and Algorithms course, ou
 ## Prerequisites
 ### Software/Libraries
 
-- [Pygame](https://www.pygame.org/) (not required to run main.py)
+- [Pygame](https://www.pygame.org/) 
 - [Python3.8](https://www.python.org/downloads/)
 
 
