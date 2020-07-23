@@ -28,8 +28,8 @@ Since we are currently taking an intro Data structures and Algorithms course, ou
 - [Python3.8](https://www.python.org/downloads/)
 
 
-### Install
-We recomend installing pygame to avoid any conflicts with running the simulator. There has been some issues with Mac OS runnning pygame this forum might help (https://stackoverflow.com/questions/52718921/problems-getting-pygame-to-show-anything-but-a-blank-screen-on-macos-mojave)
+### Pygame Installion tips
+We recomend installing pygame to avoid any conflicts with running the simulator. There has been some issues with runnning pygame on MacOS so this forum might help with the installation (https://stackoverflow.com/questions/52718921/problems-getting-pygame-to-show-anything-but-a-blank-screen-on-macos-mojave)
 
 ### Running the Program
 
