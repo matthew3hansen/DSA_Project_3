@@ -1,9 +1,10 @@
 # Initalizations
-#mapFileName = "Csv-Files/randomizedMapWithLights.csv"
-#mapFileName = "Csv-Files/randomizedCityMap.csv"
-mapFileName = "Csv-Files/small_grid.csv"
+bigMapFileName = "Csv-Files/randomizedCityMap.csv"
+smallMapFileName = "Csv-Files/small_grid.csv"
 streetNamesFileName = "Csv-Files/streetNames.csv"
+mapFileName = smallMapFileName #keep this as the smaller map name, as this default value is the one that is imported into by the pygames file
 useNumbersInsteadOfStreetNames = True
+
 #unsafeIntersectionWeight = 10
 #safeIntersectionWeight = 1
 
@@ -19,7 +20,7 @@ class Node:
         self.dist = float("inf")
         #weight of the Node, for Dijikstra
         self.weight = float("inf")
-        #boolean flag indicating that the Node has been visited for Dijikstra
-        self.visited = False
         #storing the path(s) used for Dijikstra
         self.previousPath = []
+        #visited flag used for the multiple-path version of Dijikstra
+        self.visited = False

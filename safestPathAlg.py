@@ -32,13 +32,8 @@ def findDimensionsOfMap():
     # return the row and column values
     return rowCount, columnCount
 
-
-# read in from the file and create the map
-# first, this function reads in street names for each latitude row and longitude column of the map,
-# storing them in a "horizontalStreetNames" array as well as a "verticalStreetNames" array
-# then this function creates a 2D array and populates it with created Nodes, if the associated map position isn't blocked
-def createArray(rows, columns):
-    # open and read in street names
+#Modularizing
+def readFile(rows, columns):
     streetNamesFileObject = open(streetNamesFileName, "r")
     # arrays to store in the horizontal and vertical street names
     horizontalStreetNames = ["" for i in range(rows)]
@@ -59,6 +54,15 @@ def createArray(rows, columns):
         verticalStreetNames[j] = readInLine
     # close the previously opened street names file
     streetNamesFileObject.close()
+    return horizontalStreetNames, verticalStreetNames
+
+# read in from the file and create the map
+# first, this function reads in street names for each latitude row and longitude column of the map,
+# storing them in a "horizontalStreetNames" array as well as a "verticalStreetNames" array
+# then this function creates a 2D array and populates it with created Nodes, if the associated map position isn't blocked
+def createArray(rows, columns):
+    # open and read in street names
+    horizontalStreetNames, verticalStreetNames = readFile(rows, columns)
 
     # open the csv file that contains the city map, in order to read in the data to create the map's nodes
     # second argument "r" is read-mode
