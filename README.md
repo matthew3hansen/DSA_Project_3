@@ -22,9 +22,11 @@ The safest path finder maps out the safest and shortest path using Dijstra's Sho
 Since we are currently taking an intro Data structures and Algorithms course, our knowlege of pathfinding algorithms is limited. It was very challenging working virutually with the team since Covid-19 has closed down our college campus for the summer and not all of us has the same experience with pygame/python.
 
 ## Prerequisites
-### Software
+### Software/Libraries
 
 - [Pygame](https://www.pygame.org/) (not required to run main.py)
+- [Python3.8](https://www.python.org/downloads/)
+
 
 ### Install
 We recomend installing pygame to avoid any conflicts with running the simulator. There has been some issues with Mac OS runnning pygame this forum might help (https://stackoverflow.com/questions/52718921/problems-getting-pygame-to-show-anything-but-a-blank-screen-on-macos-mojave)
