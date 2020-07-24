@@ -1,4 +1,5 @@
-from Mapinit import mapFileName, streetNamesFileName, useNumbersInsteadOfStreetNames, Node
+#from Mapinit import mapFileName, streetNamesFileName, useNumbersInsteadOfStreetNames, Node
+import Mapinit
 #safeIntersectionWeight, \unsafeIntersectionWeight
 import time
 
@@ -7,7 +8,7 @@ import time
 def findDimensionsOfMap():
     # open the csv file that contains the city map, in order to read in the data to create the map's nodes
     # second argument "r" is read-mode
-    readFileObject = open(mapFileName, "r")
+    readFileObject = open(Mapinit.mapFileName, "r")
 
     # count number of rows in the file
     rowCount = 0
@@ -16,7 +17,7 @@ def findDimensionsOfMap():
 
     # count number of columns in the file
     # reload the file since the previous row counting section moved the reading point to the end
-    readFileObject = open(mapFileName, "r")
+    readFileObject = open(Mapinit.mapFileName, "r")
     # read in first line
     readInLine = readFileObject.readline()
     # remove the new line character at the end
@@ -34,7 +35,7 @@ def findDimensionsOfMap():
 
 #Modularizing
 def readFile(rows, columns):
-    streetNamesFileObject = open(streetNamesFileName, "r")
+    streetNamesFileObject = open(Mapinit.streetNamesFileName, "r")
     # arrays to store in the horizontal and vertical street names
     horizontalStreetNames = ["" for i in range(rows)]
     for i in range(0, rows):
@@ -66,7 +67,7 @@ def createArray(rows, columns):
 
     # open the csv file that contains the city map, in order to read in the data to create the map's nodes
     # second argument "r" is read-mode
-    readFileObject = open(mapFileName, "r")
+    readFileObject = open(Mapinit.mapFileName, "r")
     # create array that will store the newly created Nodes
     # this array will be populated in a first 2-D for-loop
     # then the Nodes will be linked together in a second 2-D for-loop
@@ -84,9 +85,9 @@ def createArray(rows, columns):
         for singleChar in readInLine:
             # if intersection is open
             if singleChar != '0' and singleChar != '':
-                array[i][j] = Node()
+                array[i][j] = Mapinit.Node()
                 # assign street name to intersection
-                if useNumbersInsteadOfStreetNames == True:
+                if Mapinit.useNumbersInsteadOfStreetNames == True:
                     array[i][j].intersectionName = str(i) + " / " + str(j)
                 else:
                     array[i][j].intersectionName = horizontalStreetNames[i] + " / " + verticalStreetNames[j]
@@ -142,7 +143,7 @@ def createAdjacencyList(array, rows, columns):
             if j - 1 >= 0 and array[i][j - 1] != None:
                 adjacencyList[runningIndexOfList].adjacentNodes.append((array[i][j - 1], "W"))
 
-    print("Loaded map from \"", mapFileName, "\" and street names from \"", streetNamesFileName, "\" successfully! ",
+    print("Loaded map from \"", Mapinit.mapFileName, "\" and street names from \"", Mapinit.streetNamesFileName, "\" successfully! ",
           sep='')
     print("Map loading execution time was:", (time.time() - startTime), "seconds")
     print()
