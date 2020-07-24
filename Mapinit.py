@@ -1,7 +1,7 @@
 # Initalizations
-bigMapFileName = "Csv-Files/randomizedCityMap.csv"
-smallMapFileName = "Csv-Files/small_grid.csv"
-streetNamesFileName = "Csv-Files/streetNames.csv"
+bigMapFileName = "Csv_Files/randomizedCityMap.csv"
+smallMapFileName = "Csv_Files/small_grid.csv"
+streetNamesFileName = "Csv_Files/streetNames.csv"
 mapFileName = smallMapFileName #keep this as the smaller map name, as this default value is the one that is imported into by the pygames file
 useNumbersInsteadOfStreetNames = True
 
