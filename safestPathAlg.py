@@ -1,86 +1,56 @@
-#from Mapinit import mapFileName, streetNamesFileName, useNumbersInsteadOfStreetNames, Node
 import Mapinit
-#safeIntersectionWeight, \unsafeIntersectionWeight
 import time
 
-# function that finds the number of rows and columns from the file
-# and stores them in the passed in row and column variables
-def findDimensionsOfMap():
-    # open the csv file that contains the city map, in order to read in the data to create the map's nodes
-    # second argument "r" is read-mode
-    readFileObject = open(Mapinit.mapFileName, "r")
 
+# Finds number of rows and columns
+def findDimensionsOfMap():
+    readFileObject = open(Mapinit.mapFileName, "r")
     # count number of rows in the file
     rowCount = 0
     for line in readFileObject:
         rowCount += 1
 
-    # count number of columns in the file
-    # reload the file since the previous row counting section moved the reading point to the end
     readFileObject = open(Mapinit.mapFileName, "r")
-    # read in first line
     readInLine = readFileObject.readline()
-    # remove the new line character at the end
     readInLine = readInLine.strip('\n')
-    # make the string into a list, deliminated by commas
     readInLine = readInLine.split(',')
-    # count up the number of elements in the list and that is the number of columns
     columnCount = len(readInLine)
-
-    # close the previously opened csv file that contains the city map
     readFileObject.close()
-
-    # return the row and column values
     return rowCount, columnCount
 
-#Modularizing
+
+# Reads specified file
 def readFile(rows, columns):
     streetNamesFileObject = open(Mapinit.streetNamesFileName, "r")
-    # arrays to store in the horizontal and vertical street names
     horizontalStreetNames = ["" for i in range(rows)]
     for i in range(0, rows):
-        # read in single line
         readInLine = streetNamesFileObject.readline()
-        # remove the new line character at the end
         readInLine = readInLine.strip('\n')
-        # store into array
         horizontalStreetNames[i] = readInLine
+
     verticalStreetNames = ["" for j in range(columns)]
     for j in range(0, columns):
-        # read in single line
         readInLine = streetNamesFileObject.readline()
-        # remove the new line character at the end
         readInLine = readInLine.strip('\n')
-        # store into array
         verticalStreetNames[j] = readInLine
-    # close the previously opened street names file
     streetNamesFileObject.close()
     return horizontalStreetNames, verticalStreetNames
 
-# read in from the file and create the map
-# first, this function reads in street names for each latitude row and longitude column of the map,
-# storing them in a "horizontalStreetNames" array as well as a "verticalStreetNames" array
-# then this function creates a 2D array and populates it with created Nodes, if the associated map position isn't blocked
-def createArray(rows, columns):
-    # open and read in street names
-    horizontalStreetNames, verticalStreetNames = readFile(rows, columns)
 
-    # open the csv file that contains the city map, in order to read in the data to create the map's nodes
-    # second argument "r" is read-mode
+"""
+- createArray() reads in street names for each latitude row and longitude column of the map,
+- storing them in a "horizontalStreetNames" array as well as a "verticalStreetNames" array
+- then this function creates a 2D array and populates it with created Nodes, if the associated map position isn't blocked
+"""
+def createArray(rows, columns):
+    horizontalStreetNames, verticalStreetNames = readFile(rows, columns)
     readFileObject = open(Mapinit.mapFileName, "r")
-    # create array that will store the newly created Nodes
-    # this array will be populated in a first 2-D for-loop
-    # then the Nodes will be linked together in a second 2-D for-loop
-    array = [[None for y in range(columns)] for x in range(rows)]
-    # nested for-loop that reads in the map CSV file and populates the 2-D array of Nodes
-    for i in range(0, rows):
-        # read in single line
+    array = [[None for y in range(columns)] for x in range(rows)]  # 2-D array Initalization
+
+    for i in range(0, rows):  # populates 2D array
         readInLine = readFileObject.readline()
-        # remove the new line character at the end
         readInLine = readInLine.strip('\n')
-        # make the string into a list, deliminated by commas
         readInLine = readInLine.split(',')
-        # nested inner for-loop
         j = 0
         for singleChar in readInLine:
             # if intersection is open
@@ -95,28 +65,20 @@ def createArray(rows, columns):
                 array[i][j].weight = int(singleChar)
             elif singleChar != '':
                 array[i][j] = None
-            # iterate to next j index
             j += 1
-    # close the previously opened .csv file that contains the city map
     readFileObject.close()
     return array
 
 
-# the 2-D array map is scanned from left-to-right, up-to-down, tile by tile,
-# during this scan, the Nodes are added to the newly created adjacency list, and the inner array for each added Node
-# is populated with the unblocked nodes to the north, south, east, and west of that Node
+"""
+- the 2-D array map is scanned from left-to-right, up-to-down, tile by tile,
+- during this scan, the Nodes are added to the newly created adjacency list, and the inner array for each added Node
+- is populated with the unblocked nodes to the north, south, east, and west of that Node
+"""
 def createAdjacencyList(array, rows, columns):
-    # keep track of the execution time to output at the end of the function
-    startTime = time.time()
-    # nested for-loop that populates an adjacency list
-    # this for-loop scans over the previously made 2-D map from left-to-right, up-to-down
-    # and adds not-blocked Nodes to the outer array, then an inner array data member of that Node is populated
-    # with the Nodes that are adjacent and not-blocked
-    # outer array storing the unique Nodes
+    startTime = time.time() # measuring runtime
     adjacencyList = []
-    # dictionary that will map between a string intersection name with the relevant Node object
     intersectionNameDictionary = {}
-    # counter variable to keep track of how many non-blocked Nodes are added to the adjacency list, for the above dictionary
     runningIndexOfList = -1
     for i in range(0, rows):
         for j in range(0, columns):
@@ -143,22 +105,24 @@ def createAdjacencyList(array, rows, columns):
             if j - 1 >= 0 and array[i][j - 1] != None:
                 adjacencyList[runningIndexOfList].adjacentNodes.append((array[i][j - 1], "W"))
 
-    print("Loaded map from \"", Mapinit.mapFileName, "\" and street names from \"", Mapinit.streetNamesFileName, "\" successfully! ",
+    print("Loaded map from \"", Mapinit.mapFileName, "\" and street names from \"", Mapinit.streetNamesFileName,
+          "\" successfully! ",
           sep='')
     print("Map loading execution time was:", (time.time() - startTime), "seconds")
     print()
-    # return the created 2-D adjacency list
     return adjacencyList, intersectionNameDictionary
 
 
-# take in a 2-D array adjacency list and its accompany dictionary
-# and use Dijikstra's shortest path algorithm to find the shortest path to the destination
-# only one path is found if there are multiple identical length paths
-# finally, print out this path to the terminal
+"""
+- take in a 2-D array adjacency list and its accompany dictionary
+- and use Dijikstra's shortest path algorithm to find the shortest path to the destination
+- only one path is found if there are multiple identical length paths
+- finally, print out this path to the terminal
+"""
 def findShortestPathSingle(adjacencyList, intersectionNameDictionary, sourceIntersectionName,
                            destinationIntersectionName, usingNodesWeights):
-    # keep track of the execution time to output at the end of the function
     startTime = time.time()
+
     # first check if the input intersections exist at all in the adjacency list
     if (sourceIntersectionName not in intersectionNameDictionary.keys()):
         print("Specified source street intersection: \"", sourceIntersectionName,
@@ -176,7 +140,7 @@ def findShortestPathSingle(adjacencyList, intersectionNameDictionary, sourceInte
 
     # set the source intersection's "dist" value to 0
     adjacencyList[intersectionNameDictionary[sourceIntersectionName]].dist = 0
-    # for-loop over all the unique nodes, performing Dijikstra's algorithm
+    # performing Dijikstra's algorithm
     while (len(adjacencyList) != 0):
         # first find the node with the lowest distance
         minDistance = float("inf")
@@ -230,19 +194,17 @@ def findShortestPathSingle(adjacencyList, intersectionNameDictionary, sourceInte
                   (time.time() - startTime), "seconds")
             print()
             return
-        # before continuing on the while loop,
-        # remove the visited Node from the adjacency list so that it is no longer scanned in future runs of the while loop
         adjacencyList.pop(minIndex)
 
-
-# find multiple paths if there are multiple routes of the same shortest-length
-# the oveall procedure is similar the "findShortestPathSingle()" function above,
-# however there are differences in that the looked-at nodes are not removed from the adjacency list
-# as this somehow breaks the functionality of the function, and the writer of this function could not find out why after
-# hours of analysis
+"""
+- find multiple paths if there are multiple routes of the same shortest-length
+- the oveall procedure is similar the "findShortestPathSingle()" function above,
+- however there are differences in that the looked-at nodes are not removed from the adjacency list
+- as this somehow breaks the functionality of the function, and the writer of this function could not find out why after
+- hours of analysis
+"""
 def findShortestPathMultiple(adjacencyList, intersectionNameDictionary, sourceIntersectionName,
                              destinationIntersectionName, usingNodesWeights):
-    # keep track of the execution time to output at the end of the function
     startTime = time.time()
     # first check if the input intersections exist at all in the adjacency list
     if (sourceIntersectionName not in intersectionNameDictionary.keys()):
@@ -259,7 +221,6 @@ def findShortestPathMultiple(adjacencyList, intersectionNameDictionary, sourceIn
               "\" are the same, please enter different points.\n", sep='')
         return
 
-    # set the source intersection's "dist" value to 0
     adjacencyList[intersectionNameDictionary[sourceIntersectionName]].dist = 0
     # used to know when to stop calculating paths
     destinationNodeMinimumDistance = float("inf")
