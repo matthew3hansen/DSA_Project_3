@@ -5,7 +5,7 @@
 <br />
 <p align="right">
   <a href="https://github.com/matthew3hansen/DSA_Project_3">
-    <img src="Background%20images/better_visual.png" alt="Logo" width="300">
+    <img src="Background%20images/better_visual.png" alt="Logo" width="400">
   </a>
   <br />
 
