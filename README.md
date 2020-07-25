@@ -31,6 +31,11 @@ Since we are currently taking an intro Data structures and Algorithms course, ou
 ### Pygame Installion tips
 We recomend installing pygame to avoid any conflicts with running the simulator. There has been some issues with runnning pygame on MacOS so this forum might help with the installation (https://stackoverflow.com/questions/52718921/problems-getting-pygame-to-show-anything-but-a-blank-screen-on-macos-mojave)
 
+In order to download the Pygame Library you can use the command 
+```pip
+install pygame
+```
+
 ### Running the Program
 
 Download the zip file, enter the folder's current directory. Then enter this command to get visual or readable directions.
