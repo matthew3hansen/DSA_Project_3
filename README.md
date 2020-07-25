@@ -28,7 +28,7 @@ Since we are currently taking an intro Data structures and Algorithms course, ou
 - [Python3.8](https://www.python.org/downloads/)
 
 
-# Python installation tips
+### Python installation tips
 
 Our project requires python 3.0 and above. To check your version of python you can use this command into your terminal window.
 ``` 
@@ -48,10 +48,42 @@ pip install pygame
 
 ### Running the Program
 
-Download the zip file, enter the folder's current directory. Then enter this command to get visual or readable directions.
+Download the zip file, unzip the zipfile and enter to the folders current directory where main.py is found.
+Then enter this command.
+
 ```python3
 python3 main.py
 ```
+
+#### Getting visual directions
+
+You should recieve this text in the command window after starting the program with the previous command
+
+```
+Enter "1" to begin a shortest-path search, enter "2" to configure options, enter "exit" to exit:
+
+```
+
+Entering 1 into the command window should give another line of options
+
+```
+Enter 	"1" to perform visual GUI shortest-path search (small grid)
+	      "2" to perform text-based shortest path search (large grid)
+      	"3" to perform text-based multiple shortest paths search (large grid)
+      	"cancel" to return to the main menu
+(type in here):
+
+```
+
+Entering 1 into the terminal will display the main menu of the visual. It should look like
+
+
+<br />
+<p align="center">
+  <a href="https://github.com/matthew3hansen/DSA_Project_3">
+    <img src="Background%20images/home_screen.png" alt="Logo" width="500">
+  </a>
+  <br />
 
 
 
