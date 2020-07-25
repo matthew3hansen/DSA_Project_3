@@ -3,7 +3,7 @@
 [![Python 3.x](https://img.shields.io/badge/python-3.x-blue.svg)](https://www.python.org/downloads/release/python-370/)
 
 <br />
-<p align="center">
+<p align="right">
   <a href="https://github.com/matthew3hansen/DSA_Project_3">
     <img src="Background%20images/better_visual.png" alt="Logo" width="500">
   </a>
