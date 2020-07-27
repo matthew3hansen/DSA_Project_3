@@ -30,10 +30,62 @@ if __name__ == '__main__':
                 #receive user-input
                 if(Mapinit.useNumbersInsteadOfStreetNames == False):
                     sourceIntersectionName = input("Enter name of starting street intersection (e.g. \"Chevrolet / Westbrooke\"): ")
+                    #check if the input exists at all in the adjacency list
+                    while (sourceIntersectionName not in intersectionNameDictionary.keys()):
+                        print("Specified source street intersection: \"", sourceIntersectionName,
+                              "\" was not recognized as a valid starting point.\n", sep='')
+                        sourceIntersectionName = input("Enter name of starting street intersection (e.g. \"Chevrolet / Westbrooke\"): ")
                     destinationIntersectionName = input("Enter name of destination street intersection (e.g. \"Studebaker / Rochelle\"): ")
+                    #check if the input exists at all in the adjacency list
+                    while (destinationIntersectionName not in intersectionNameDictionary.keys()):
+                        print("Specified destination street intersection: \"", destinationIntersectionName,
+                        "\" was not recognized as a valid destination point.\n", sep='')
+                        destinationIntersectionName = input("Enter name of destination street intersection (e.g. \"Studebaker / Rochelle\"): ")
+                    #check if the source and destination are the same
+                    while (sourceIntersectionName == destinationIntersectionName):
+                        print("Specified source and destination street intersections: \"", destinationIntersectionName,
+                              "\" are the same, please enter different points.\n", sep='')
+                        sourceIntersectionName = input("Enter name of starting street intersection (e.g. \"Chevrolet / Westbrooke\"): ")
+                        #check if the input exists at all in the adjacency list
+                        while (sourceIntersectionName not in intersectionNameDictionary.keys()):
+                            print("Specified source street intersection: \"", sourceIntersectionName,
+                                  "\" was not recognized as a valid starting point.\n", sep='')
+                            sourceIntersectionName = input("Enter name of starting street intersection (e.g. \"Chevrolet / Westbrooke\"): ")
+                        destinationIntersectionName = input("Enter name of destination street intersection (e.g. \"Studebaker / Rochelle\"): ")
+                        #check if the input exists at all in the adjacency list
+                        while (destinationIntersectionName not in intersectionNameDictionary.keys()):
+                            print("Specified destination street intersection: \"", destinationIntersectionName,
+                            "\" was not recognized as a valid destination point.\n", sep='')
+                            destinationIntersectionName = input("Enter name of destination street intersection (e.g. \"Studebaker / Rochelle\"): ")
                 else:
                     sourceIntersectionName = input("Enter name of starting street intersection (e.g. \"0 / 0\"): ")
+                    #check if the input exists at all in the adjacency list
+                    while (sourceIntersectionName not in intersectionNameDictionary.keys()):
+                        print("Specified source street intersection: \"", sourceIntersectionName,
+                              "\" was not recognized as a valid starting point.\n", sep='')
+                        sourceIntersectionName = input("Enter name of starting street intersection (e.g. \"0 / 0\"): ")
                     destinationIntersectionName = input("Enter name of destination street intersection (e.g. \"1 / 1\"): ")
+                    #check if the input exists at all in the adjacency list
+                    while (destinationIntersectionName not in intersectionNameDictionary.keys()):
+                        print("Specified destination street intersection: \"", destinationIntersectionName,
+                        "\" was not recognized as a valid destination point.\n", sep='')
+                        destinationIntersectionName = input("Enter name of destination street intersection (e.g. \"1 / 1\"): ")
+                    #check if the source and destination are the same
+                    while (sourceIntersectionName == destinationIntersectionName):
+                        print("Specified source and destination street intersections: \"", destinationIntersectionName,
+                              "\" are the same, please enter different points.\n", sep='')
+                        sourceIntersectionName = input("Enter name of starting street intersection (e.g. \"0 / 0\"): ")
+                        #check if the input exists at all in the adjacency list
+                        while (sourceIntersectionName not in intersectionNameDictionary.keys()):
+                            print("Specified source street intersection: \"", sourceIntersectionName,
+                                  "\" was not recognized as a valid starting point.\n", sep='')
+                            sourceIntersectionName = input("Enter name of starting street intersection (e.g. \"0 / 0\"): ")
+                        destinationIntersectionName = input("Enter name of destination street intersection (e.g. \"1 / 1\"): ")
+                        #check if the input exists at all in the adjacency list
+                        while (destinationIntersectionName not in intersectionNameDictionary.keys()):
+                            print("Specified destination street intersection: \"", destinationIntersectionName,
+                            "\" was not recognized as a valid destination point.\n", sep='')
+                            destinationIntersectionName = input("Enter name of destination street intersection (e.g. \"1 / 1\"): ")
                 weightMode = input("Factor in crime map? (\"y\") or find the strictly shortest physical path (\"n\")?: ")
                 while(weightMode != "y" and weightMode != "n"):
                     weightMode = input("Factor in crime map? (\"y\") or find the strictly shortest physical path (\"n\")?: ")
@@ -49,19 +101,71 @@ if __name__ == '__main__':
                 Mapinit.mapFileName = Mapinit.bigMapFileName
                 #first find the dimensions of the map
                 rows, columns = safestPathAlg.findDimensionsOfMap()
-                #receive user-input
-                if(Mapinit.useNumbersInsteadOfStreetNames == False):
-                    sourceIntersectionName = input("Enter name of starting street intersection (e.g. \"Chevrolet / Westbrooke\"): ")
-                    destinationIntersectionName = input("Enter name of destination street intersection (e.g. \"Studebaker / Rochelle\"): ")
-                else:
-                    sourceIntersectionName = input("Enter name of starting street intersection (e.g. \"0 / 0\"): ")
-                    destinationIntersectionName = input("Enter name of destination street intersection (e.g. \"1 / 1\"): ")
-                weightMode = input("Factor in crime map? (\"y\") or find the strictly shortest physical path (\"n\")?: ")
-                while(weightMode != "y" and weightMode != "n"):
-                    weightMode = input("Factor in crime map? (\"y\") or find the st1ictly shortest physical path (\"n\")?: ")
                 #load a new map & adjacency list instance
                 array = safestPathAlg.createArray(rows, columns)
                 adjacencyList, intersectionNameDictionary = safestPathAlg.createAdjacencyList(array, rows, columns)
+                #receive user-input
+                if(Mapinit.useNumbersInsteadOfStreetNames == False):
+                    sourceIntersectionName = input("Enter name of starting street intersection (e.g. \"Chevrolet / Westbrooke\"): ")
+                    #check if the input exists at all in the adjacency list
+                    while (sourceIntersectionName not in intersectionNameDictionary.keys()):
+                        print("Specified source street intersection: \"", sourceIntersectionName,
+                              "\" was not recognized as a valid starting point.\n", sep='')
+                        sourceIntersectionName = input("Enter name of starting street intersection (e.g. \"Chevrolet / Westbrooke\"): ")
+                    destinationIntersectionName = input("Enter name of destination street intersection (e.g. \"Studebaker / Rochelle\"): ")
+                    #check if the input exists at all in the adjacency list
+                    while (destinationIntersectionName not in intersectionNameDictionary.keys()):
+                        print("Specified destination street intersection: \"", destinationIntersectionName,
+                        "\" was not recognized as a valid destination point.\n", sep='')
+                        destinationIntersectionName = input("Enter name of destination street intersection (e.g. \"Studebaker / Rochelle\"): ")
+                    #check if the source and destination are the same
+                    while (sourceIntersectionName == destinationIntersectionName):
+                        print("Specified source and destination street intersections: \"", destinationIntersectionName,
+                              "\" are the same, please enter different points.\n", sep='')
+                        sourceIntersectionName = input("Enter name of starting street intersection (e.g. \"Chevrolet / Westbrooke\"): ")
+                        #check if the input exists at all in the adjacency list
+                        while (sourceIntersectionName not in intersectionNameDictionary.keys()):
+                            print("Specified source street intersection: \"", sourceIntersectionName,
+                                  "\" was not recognized as a valid starting point.\n", sep='')
+                            sourceIntersectionName = input("Enter name of starting street intersection (e.g. \"Chevrolet / Westbrooke\"): ")
+                        destinationIntersectionName = input("Enter name of destination street intersection (e.g. \"Studebaker / Rochelle\"): ")
+                        #check if the input exists at all in the adjacency list
+                        while (destinationIntersectionName not in intersectionNameDictionary.keys()):
+                            print("Specified destination street intersection: \"", destinationIntersectionName,
+                            "\" was not recognized as a valid destination point.\n", sep='')
+                            destinationIntersectionName = input("Enter name of destination street intersection (e.g. \"Studebaker / Rochelle\"): ")
+                else:
+                    sourceIntersectionName = input("Enter name of starting street intersection (e.g. \"0 / 0\"): ")
+                    #check if the input exists at all in the adjacency list
+                    while (sourceIntersectionName not in intersectionNameDictionary.keys()):
+                        print("Specified source street intersection: \"", sourceIntersectionName,
+                              "\" was not recognized as a valid starting point.\n", sep='')
+                        sourceIntersectionName = input("Enter name of starting street intersection (e.g. \"0 / 0\"): ")
+                    destinationIntersectionName = input("Enter name of destination street intersection (e.g. \"1 / 1\"): ")
+                    #check if the input exists at all in the adjacency list
+                    while (destinationIntersectionName not in intersectionNameDictionary.keys()):
+                        print("Specified destination street intersection: \"", destinationIntersectionName,
+                        "\" was not recognized as a valid destination point.\n", sep='')
+                        destinationIntersectionName = input("Enter name of destination street intersection (e.g. \"1 / 1\"): ")
+                    #check if the source and destination are the same
+                    while (sourceIntersectionName == destinationIntersectionName):
+                        print("Specified source and destination street intersections: \"", destinationIntersectionName,
+                              "\" are the same, please enter different points.\n", sep='')
+                        sourceIntersectionName = input("Enter name of starting street intersection (e.g. \"0 / 0\"): ")
+                        #check if the input exists at all in the adjacency list
+                        while (sourceIntersectionName not in intersectionNameDictionary.keys()):
+                            print("Specified source street intersection: \"", sourceIntersectionName,
+                                  "\" was not recognized as a valid starting point.\n", sep='')
+                            sourceIntersectionName = input("Enter name of starting street intersection (e.g. \"0 / 0\"): ")
+                        destinationIntersectionName = input("Enter name of destination street intersection (e.g. \"1 / 1\"): ")
+                        #check if the input exists at all in the adjacency list
+                        while (destinationIntersectionName not in intersectionNameDictionary.keys()):
+                            print("Specified destination street intersection: \"", destinationIntersectionName,
+                            "\" was not recognized as a valid destination point.\n", sep='')
+                            destinationIntersectionName = input("Enter name of destination street intersection (e.g. \"1 / 1\"): ")
+                weightMode = input("Factor in crime map? (\"y\") or find the strictly shortest physical path (\"n\")?: ")
+                while(weightMode != "y" and weightMode != "n"):
+                    weightMode = input("Factor in crime map? (\"y\") or find the st1ictly shortest physical path (\"n\")?: ")
                 if(weightMode == "y"):
                     #execute Diikstra's algorithm for single path
                     safestPathAlg.findShortestPathMultiple(adjacencyList, intersectionNameDictionary, sourceIntersectionName, destinationIntersectionName, True)
