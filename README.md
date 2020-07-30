@@ -28,7 +28,7 @@ Since we are currently taking an intro Data structures and Algorithms course, ou
 - [Python3.8](https://www.python.org/downloads/)
 
 
-### Python installation tips
+### Python 3.8 Installation tips
 
 Our project requires python 3.0 and above. To check your version of python you can use this command into your terminal window.
 ``` 
@@ -38,7 +38,7 @@ python --version
 You can download the latest version of python directly from this website [Python3.8](https://www.python.org/downloads/)
 
 
-### Pygame Installion tips
+### Pygame Library Installion tips
 We recomend installing pygame to avoid any conflicts with running the simulator. There has been some issues with runnning pygame on MacOS so this forum might help with the installation (https://stackoverflow.com/questions/52718921/problems-getting-pygame-to-show-anything-but-a-blank-screen-on-macos-mojave)
 
 In order to download the Pygame Library you can use this command in your terminal
