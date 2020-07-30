@@ -1,4 +1,4 @@
-import pygameMain
+import PyGameMain
 import safestPathAlg
 
 #MAIN FUNCTION
@@ -17,7 +17,7 @@ if __name__ == '__main__':
                 userInput = input("\nEnter \t\"1\" to perform visual GUI shortest-path search (small grid)\n\t\"2\" to perform text-based shortest path search (large grid)\n\t\"3\" to perform text-based multiple shortest paths search (large grid)\n\t\"cancel\" to return to the main menu\n(type in here): ")
             #single shortest path visual GUI function
             if(userInput == "1"):
-                pygameMain.main_menu()
+                PyGameMain.main_menu()
             #single shortest path text function command
             elif(userInput == "2"):
                 #specify that the CSV file being used is the big size one
