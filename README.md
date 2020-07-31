@@ -9,6 +9,24 @@
   </a>
   <br />
 
+
+## Table of Contents
+
+- [Motivation](#Motivation)
+- [Features](#Features)
+- [Getting Started](#Getting-Started)
+  - [Prerequisites](#Prerequisites)
+  - [Software/Libraries](#Software/Libraries)
+  - [Python 3.8 Installation tips)(#Python-3.8-Installation-tips)
+  - [Pygame Library Installion tips](#Pygame-Library-Installion-tips)
+ - [Running the Program](#Running-the-Program)
+   - [Getting Visual or Readable Directions](#Getting-Visual-or-Readable-Directions)
+ - [What's next for Safest Path Finder?](#What's-next-for-Safest-Path-Finder?)
+ - [References](#References)
+   
+ 
+  
+
 ### Motivation
 
 In the wake of Covid-19 and social unrest, crime rates are steadily increasing, especially in urban areas. Walking somewhere could be especially dangerous if the person isn't aware of the current crime rates in the area.
@@ -17,9 +35,18 @@ In the wake of Covid-19 and social unrest, crime rates are steadily increasing, 
 
 The safest path finder maps out the safest and shortest path using Dijstra's Shortest Path algorithm. We have implemented a crime rate generator that assigns specific areas with the current crime rate on a scale of 1-10. We also have implemented a simulator that maps out the route to the destination.
 
-### Challenges we had to face
 
-Since we are currently taking an intro Data structures and Algorithms course, our knowlege of pathfinding algorithms is limited. It was very challenging working virutually with the team since Covid-19 has closed down our college campus for the summer and not all of us has the same experience with pygame/python.
+
+## Getting started
+
+To start using our program, you must download this github repo to your preferred directory by either downloading the zip file or cloning our repo by using the command below
+
+``` git clone https://github.com/matthew3hansen/DSA_Project_3/edit/master/README.md	```
+
+If you dont already have python installed you must install a version of python 3.0 or above along with the pygame library.
+
+
+
 
 ## Prerequisites
 ### Software/Libraries
@@ -46,7 +73,7 @@ In order to download the Pygame Library you can use this command in your termina
 pip install pygame
 ```
 
-### Running the Program
+## Running the Program
 
 Download the zip file, unzip the zipfile and enter to the folders current directory where main.py is found.
 Then enter this command to start the program.
