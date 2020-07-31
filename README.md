@@ -17,7 +17,7 @@
 - [Getting Started](#Getting-Started)
   - [Prerequisites](#Prerequisites)
   - [Software/Libraries](#Software/Libraries)
-  - [Python 3.8 Installation tips)(#Python-3.8-Installation-tips)
+  - [Python 3.8 Installation tips](#Python-3.8-Installation-tips)
   - [Pygame Library Installion tips](#Pygame-Library-Installion-tips)
  - [Running the Program](#Running-the-Program)
    - [Getting Visual or Readable Directions](#Getting-Visual-or-Readable-Directions)
