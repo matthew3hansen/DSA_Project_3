@@ -49,15 +49,15 @@ pip install pygame
 ### Running the Program
 
 Download the zip file, unzip the zipfile and enter to the folders current directory where main.py is found.
-Then enter this command.
+Then enter this command to start the program.
 
 ```python3
 python3 main.py
 ```
 
-#### Getting visual directions
+#### Getting Visual or Readable Directions
 
-**Step 1**
+**Step 1: **
 You should recieve this text in the command window after starting the program with the previous command
 
 ```
@@ -65,7 +65,7 @@ Enter "1" to begin a shortest-path search, enter "2" to configure options, enter
 
 ```
 
-**Step 2**
+**Step 2: **
 Entering 1 into the command window should give another line of options
 
 ```
@@ -76,7 +76,15 @@ Enter 	"1" to perform visual GUI shortest-path search (small grid)
 (type in here):
 
 ```
-**Step 3**
+
+*Visual Directions: Entering 1 in your command window will allow you to get visual directions of a subset of the full map*
+
+
+*Readable Directions: Entering 2 or 3 will allow you to get readble directions of the full scale map*
+
+
+
+**Step 3: **
 Entering 1 into the terminal will display the main menu of the visual. It should look like
 
 
@@ -91,11 +99,9 @@ Entering 1 into the terminal will display the main menu of the visual. It should
 Follow the directions accordingly on the main screen to play the game!
 (Note the visual map shows a sub-graph of the original map so it is easier to visualize!)
 
-If you want to use the full map you can enter 2 at step 1 to get step by step instructions.
 
 
-
-# What's next for Safest Path Finder?
+### What's next for Safest Path Finder?
 
 
 ## References
