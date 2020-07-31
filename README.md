@@ -86,7 +86,7 @@ python3 main.py
 
 #### Getting Visual or Readable Directions
 
-**Step 1: **
+**Step 1:**
 You should recieve this text in the command window after starting the program with the previous command
 
 ```
@@ -94,7 +94,7 @@ Enter "1" to begin a shortest-path search, enter "2" to configure options, enter
 
 ```
 
-**Step 2: **
+**Step 2:**
 Entering 1 into the command window should give another line of options
 
 ```
@@ -113,7 +113,7 @@ Enter 	"1" to perform visual GUI shortest-path search (small grid)
 
 
 
-**Step 3: **
+**Step 3:**
 Entering 1 into the terminal will display the main menu of the visual. It should look like
 
 
