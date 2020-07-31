@@ -1,4 +1,4 @@
-import PyGameMain
+import pygameMain
 import safestPathAlg
 
 #MAIN FUNCTION
