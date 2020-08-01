@@ -16,11 +16,15 @@
 
 ### Motivation
 
-In the wake of Covid-19 and social unrest, crime rates are steadily increasing, especially in urban areas. Walking somewhere could be especially dangerous if the person isn't aware of the current crime rates in the area. As UF students, we have seen how walking home can be very dangerous, especially when there are UF alerts that notify us when there is a current crime such as a robbery, shooting or sexual assualt in the area. Safest Path Finder was meant to be a guardian angel that can help those walking home, find the way home.
+In the wake of Covid-19 and social unrest, crime rates are steadily increasing, especially in urban areas. Walking somewhere could be especially dangerous if the person isn't aware of the current crime rates in the area. As UF students, we have seen how walking home can be very dangerous, especially when there are UF alerts that notify us when there is a current crime such as a robbery, shooting or sexual assualt in the area. Safest Path Finder is meant to be a guardian angel that can help those get home safely.
 
 ### Features
 
-The safest path finder maps out the safest and shortest path using Dijstra's Shortest Path algorithm. We have implemented a crime rate generator that assigns specific areas with the current crime rate on a scale of 1-10. We also have implemented a simulator that maps out the route to the destination.
+- The safest path finder maps out the safest and shortest path using Dijstra's Shortest Path algorithm
+- A crime rate generator that assigns specific areas with the current crime rate on a scale of 1-10
+- A single / multiple visual path finder, that allows for the user to find single or multiple safe paths visual on the GUI
+- Readable directions in the console, alternate way of getting directions instead of visually.
+- Configurable Options for a user to get generated street names instead of coordiates on grid.
 
 
 ---
@@ -167,7 +171,7 @@ Follow the directions accordingly on the main screen to play the game!
   </a>
   <br />
 	
-
+---
 
 ### What's next for Safest Path Finder?
 
