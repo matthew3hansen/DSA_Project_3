@@ -158,6 +158,15 @@ Follow the directions accordingly on the main screen to play the game!
   <br />
 	
 	
+## Getting Readable Directions in the Console
+
+<br />
+<p align="center">
+  <a href="https://github.com/matthew3hansen/DSA_Project_3">
+    <img src="Background%20images/ConsoleOutput.png" alt="Logo" width="500">
+  </a>
+  <br />
+	
 
 
 ### What's next for Safest Path Finder?
