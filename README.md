@@ -10,9 +10,9 @@
   <br />
 
 
-### Demo/Intro Link
+### Demo/Intro Link (https://www.youtube.com/watch?v=2Z9Ud5UKPZs&feature=youtu.be)
 
-[Youtube Link] (https://www.youtube.com/watch?v=2Z9Ud5UKPZs&feature=youtu.be)
+ 
 
 ### Motivation
 
