@@ -140,6 +140,15 @@ Follow the directions accordingly on the main screen to play the game!
   </a>
   <br />
 
+## Visual of Single Path with Crime
+
+<br />
+<p align="center">
+  <a href="https://github.com/matthew3hansen/DSA_Project_3">
+    <img src="Background%20images/better_visual.png" alt="Logo" width="500">
+  </a>
+  <br />
+
 ## Visual of Single Path without Crime
 <br />
 <p align="center">
@@ -147,6 +156,9 @@ Follow the directions accordingly on the main screen to play the game!
     <img src="Background%20images/SinglePathWithoutCrime.png" alt="Logo" width="500">
   </a>
   <br />
+	
+	
+
 
 ### What's next for Safest Path Finder?
 
@@ -158,6 +170,5 @@ This program isn't suited for the real world yet, rather it is just a simple vis
 ## References
 
 [Python] (https://www.python.org/downloads/release/python-370/)
-
 [Pygame] (https://www.pygame.org/) 
 
