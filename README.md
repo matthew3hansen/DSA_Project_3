@@ -178,6 +178,8 @@ Follow the directions accordingly on the main screen to play the game!
   </a>
   <br />
 	
+To get readable directions, you can input 2 or 3 in step 2. You must enter the correct coordinate or stree intersection to be able to find directions to your destination.
+
 ---
 
 ### What's next for Safest Path Finder?
