@@ -26,7 +26,7 @@ The safest path finder maps out the safest and shortest path using Dijstra's Sho
 ---
 
 ## Table of Contents
-
+- [Demo/Intro Link](#Demo/Intro-Link)
 - [Motivation](#Motivation)
 - [Features](#Features)
 - [Getting Started](#Getting-Started)
