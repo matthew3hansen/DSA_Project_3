@@ -175,7 +175,7 @@ Follow the directions accordingly on the main screen to play the game!
 
 ### What's next for Safest Path Finder?
 
-This program isn't suited for the real world yet, rather it is just a simple visualization or outline of what could be made if further time was allocated. If we had more time to do the project, we probably would implement this as an IOS/Andriod app and using Google's map API to enhance the user's experience and further simulate the real world enviroment.
+This program isn't suited for the real world yet, rather it is just a simple visualization or outline of what could be made if further time was allocated. If we had more time to do the project, we probably would implement this as an IOS/Andriod app and using Google's map API to enhance the user's experience and further simulate the real world enviroment. We could probably pitch the idea for a company that would want to implement a project like this.
 
 
 
