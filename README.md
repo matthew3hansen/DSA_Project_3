@@ -16,7 +16,7 @@
 
 ### Motivation
 
-In the wake of Covid-19 and social unrest, crime rates are steadily increasing, especially in urban areas. Walking somewhere could be especially dangerous if the person isn't aware of the current crime rates in the area.
+In the wake of Covid-19 and social unrest, crime rates are steadily increasing, especially in urban areas. Walking somewhere could be especially dangerous if the person isn't aware of the current crime rates in the area. As UF students, we have seen how walking home can be very dangerous, especially when there are UF alerts that notify us when there is a current crime such as a robbery, shooting or sexual assualt in the area. Safest Path Finder was meant to be a guardian angel that can help those walking home, find the way home.
 
 ### Features
 
