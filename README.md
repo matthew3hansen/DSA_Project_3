@@ -131,6 +131,15 @@ Entering 1 into the terminal will display the main menu of the visual. It should
 Follow the directions accordingly on the main screen to play the game!
 (Note the visual map shows a sub-graph of the original map so it is easier to visualize!)
 
+## Visual of Multiple Paths
+
+<br />
+<p align="center">
+  <a href="https://github.com/matthew3hansen/DSA_Project_3">
+    <img src="Background%20images/MultiplePaths.png" alt="Logo" width="500">
+  </a>
+  <br />
+
 
 
 ### What's next for Safest Path Finder?
