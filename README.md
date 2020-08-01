@@ -180,6 +180,21 @@ Follow the directions accordingly on the main screen to play the game!
 	
 To get readable directions, you can input 2 or 3 in step 2. You must enter the correct coordinate or stree intersection to be able to find directions to your destination.
 
+
+## Configuring Options
+
+To configure options you can enter 2 at **Step 1** and enter your preferred specifications:
+
+```Enter "1" to begin a shortest-path search, enter "2" to configure options, enter "exit" to exit: 2
+
+Enter	"1" to enable street-names (e.g. "Chevrolet / Wilson"),
+	"2" to enable index numbers as street names (e.g. "0 / 0"),
+	"cancel" to cancel
+(type in here): 1
+```
+
+
+
 ---
 
 ### What's next for Safest Path Finder?
