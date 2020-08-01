@@ -40,6 +40,11 @@ In the wake of Covid-19 and social unrest, crime rates are steadily increasing, 
   - [Pygame Library Installion tips](#Pygame-Library-Installion-tips)
  - [Running the Program](#Running-the-Program)
    - [Getting Visual or Readable Directions](#Getting-Visual-or-Readable-Directions)
+ - [Visualization and Console Output](#Visualization-and-Console-Output)
+   - [Visual of Multiple Paths with Crime](#Visual-of-Multiple-Paths-with-Crime)
+   - [Visual of Single Path with Crime](#Visual-of-Single-Path-with-Crime)
+   - [Visual of Single Path without Crime](#Visual-of-Single-Path-without-Crime)
+   - [Getting Readable Directions in the Console](#Getting-Readable-Directions-in-the-Console)
  - [What's next for Safest Path Finder?](#What's-next-for-Safest-Path-Finder?)
  - [References](#References)
 
@@ -134,6 +139,8 @@ Entering 1 into the terminal will display the main menu of the visual. It should
 
 Follow the directions accordingly on the main screen to play the game!
 (Note the visual map shows a sub-graph of the original map so it is easier to visualize!)
+
+# Visualization and Console Output
 
 ## Visual of Multiple Paths with Crime
 
