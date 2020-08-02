@@ -214,7 +214,7 @@ This program isn't suited for the real world yet, rather it is just a simple vis
 
 ## Resources
 
-**Pygame Blank screen Issue forums**
+**Pygame blank screen issue on MacOS forums**
 
 - https://stackoverflow.com/questions/52718921/problems-getting-pygame-to-show-anything-but-a-blank-screen-on-macos-mojave
 
