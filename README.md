@@ -47,7 +47,7 @@ In the wake of Covid-19 and social unrest, crime rates are steadily increasing, 
    - [Getting Readable Directions in the Console](#Getting-Readable-Directions-in-the-Console)
    - [Configuring Options](#Configuring-Options)
  - [What's next for Safest Path Finder?](#What's-next-for-Safest-Path-Finder?)
- - [References](#References)
+ - [Built with](#Built-with)
 
 
 
