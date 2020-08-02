@@ -48,6 +48,7 @@ In the wake of Covid-19 and social unrest, crime rates are steadily increasing, 
    - [Configuring Options](#Configuring-Options)
  - [What's next for Safest Path Finder?](#What's-next-for-Safest-Path-Finder?)
  - [Built with](#Built-with)
+ - [Resources](#Resources)
 
 
 
@@ -209,4 +210,22 @@ This program isn't suited for the real world yet, rather it is just a simple vis
 [Python] (https://www.python.org/downloads/release/python-370/)
 
 [Pygame] (https://www.pygame.org/) 
+
+
+## Resources
+
+**Pygame Blank screen Issue forums**
+
+- https://stackoverflow.com/questions/52718921/problems-getting-pygame-to-show-anything-but-a-blank-screen-on-macos-mojave
+
+- https://www.reddit.com/r/pygame/comments/9pl4ni/pygame_not_loading_on_mac_just_a_black_screen_do/
+
+- https://github.com/pygame/pygame/issues/555
+
+
+**Downloading Python 3.0 extra tutorials**
+
+- https://realpython.com/installing-python/
+
+- https://pythonprogramming.net/introduction-learn-python-3-tutorials/
 
