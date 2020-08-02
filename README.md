@@ -201,9 +201,7 @@ Enter	"1" to enable street-names (e.g. "Chevrolet / Wilson"),
 
 ### What's next for Safest Path Finder?
 
-This program isn't suited for the real world yet, rather it is just a simple visualization or outline of what could be made if further time was allocated. If we had more time to do the project, we probably would implement this as an IOS/Andriod app and using Google's map API to enhance the user's experience and further simulate the real world enviroment. We could probably pitch the idea for a company that would want to implement a project like this.
-
-
+This program isn't suited for the real world yet, rather it is just a simple visualization or outline of what could be made if further time was allocated. If we had more time to do the project, we probably would implement this as an IOS/Andriod app and using Google's map API to enhance the user's experience and further simulate the real world enviroment. In addition, I think we would would implement safe spots if the user wants some where to stay in if he/she feels unsafe in the current enviroment. In the future I think we could probably pitch this idea to Uber or Lyft to integrate some sort of safe path/ spot finder to get to the pick up spot for your uber driver to pick the user up. Or even a free safe path finder for urban cities incase the user wants to safe alittle money by walking home instead of Ubering.
 
 
 ## References
